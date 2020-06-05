@@ -18,6 +18,12 @@ using System.Diagnostics;
 using AssortedModdingTools.DataStructures;
 using AssortedModdingTools.UI.Elements;
 using AssortedModdingTools.Extensions;
+using Terraria.Graphics;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Config.UI;
+using System.Collections;
+using Terraria.ModLoader.Config;
+using Terraria.UI.Chat;
 
 namespace AssortedModdingTools
 {
@@ -428,7 +434,7 @@ namespace AssortedModdingTools
 	public class UIAdvancedCreateMod : UIState
 	{
 		private UITextPanel<string> _messagePanel;
-		private UIFocusTextInput _modName;
+		private UIFocusTextInput internalName;
 		private UIFocusTextInput _modDiplayName;
 		private UIFocusTextInput _modAuthor;
 		//private UIFocusInputTextField _basicSword;
@@ -462,12 +468,19 @@ namespace AssortedModdingTools
 			}.WithPadding(15);
 			uIElement.Append(uITextPanel);
 
+			var eeee = new BooleanElement();
+			eeee.HAlign = 0.5f;
+			eeee.VAlign = 0.5f;
+			eeee.Width.Set(200, 0f);
+			eeee.Height.Set(40, 0f);
+			uIElement.Append(eeee);
+
 			_messagePanel = new UITextPanel<string>("No Problems Found. If a problem occurs it will be shown here")
 			{
 				Width = { Percent = 1f },
 				Height = { Pixels = 25 },
 				VAlign = 1f,
-				Top = { Pixels = -10 } //yikes why no visible bool
+				Top = { Pixels = -10 }
 			};
 			uIElement.Append(_messagePanel);
 
@@ -489,20 +502,21 @@ namespace AssortedModdingTools
 			uIElement.Append(buttonCreate);
 
 			float top = 16;
-			_modName = createAndAppendTextInputWithLabel("Internal Name", "Type here");
-			_modName.OnTextChange += (a, b) =>
-			{
-				_modName.SetText(_modName.currentText.RemoveSpaces());
-			};
+
+			internalName = createAndAppendTextInputWithLabel("Internal Name", "Type here");
+
+			internalName.OnTextChange += (a, b) => internalName.SetText(internalName.currentText.RemoveSpaces());
+			
+
 			_modDiplayName = createAndAppendTextInputWithLabel("Display Name", "Type here");
 			_modAuthor = createAndAppendTextInputWithLabel("Author(s)", "Type here");
-			//_basicSword = createAndAppendTextInputWithLabel("BasicSword (no spaces)", "Leave Blank to Skip");
-			_modName.OnTab += (a, b) => _modDiplayName.focused = true;
+
+			internalName.OnTab += (a, b) => _modDiplayName.focused = true;
 			_modDiplayName.OnTab += (a, b) => _modAuthor.focused = true;
 			//_modAuthor.OnTab += (a, b) => _basicSword.Focused = true;
 			//_basicSword.OnTab += (a, b) => _modName.Focused = true;
 
-			_modAuthor.OnTab += (a, b) => _modName.focused = true;
+			_modAuthor.OnTab += (a, b) => internalName.focused = true;
 
 			UIFocusTextInput createAndAppendTextInputWithLabel(string label, string hint)
 			{
@@ -548,7 +562,7 @@ namespace AssortedModdingTools
 		public override void OnActivate()
 		{
 			base.OnActivate();
-			_modName.SetText("");
+			internalName.SetText("");
 			_modDiplayName.SetText("");
 			_modAuthor.SetText("");
 			//_messagePanel.SetText("");
@@ -564,7 +578,7 @@ namespace AssortedModdingTools
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			string modNameTrimmed = _modName.currentText.Trim();
+			string modNameTrimmed = internalName.currentText.Trim();
 			//string basicSwordTrimmed = _basicSword.CurrentString.Trim();
 			string sourceFolder = Path.Combine(ModSourcePath, modNameTrimmed);
 			var provider = CodeDomProvider.CreateProvider("C#");
@@ -682,6 +696,92 @@ $@"{{
     }}
   }}
 }}";
+		}
+	}
+
+	public class BooleanElement : UIElement
+	{
+		private Texture2D toggleTexture;
+
+		public bool value = false;
+
+		public override void OnInitialize()
+		{
+			toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
+
+			var panel = new UIPanel();
+			panel.SetPadding(0);
+			panel.Width = Width;
+			panel.Height = Height;
+			Append(panel);
+
+			var uiLabel = new UIText("tttttte4s")
+			{
+				Left = { Pixels = 10 },
+				Top = { Pixels = 10 }
+			};
+			panel.Append(uiLabel);
+
+			OnClick += (ev, v) => value = !value;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch)
+		{
+			base.DrawSelf(spriteBatch);
+			CalculatedStyle dimensions = base.GetDimensions();
+			//Color panelColor = IsMouseHovering ? backgroundColor : backgroundColor.MultiplyRGBA(new Color(180, 180, 180));
+			//Vector2 position = vector;
+			//DrawPanel2(spriteBatch, new Vector2(dimensions.X, dimensions.Y), Main.settingsPanelTexture, 40, dimensions.Height, new Color(180, 180, 180));
+			// "Yes" and "No" since no "True" and "False" translation available
+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, value ? "true" : "false", new Vector2(dimensions.X + dimensions.Width - 60, dimensions.Y + 8f), Color.White, 0f, Vector2.Zero, new Vector2(0.8f));
+			Rectangle sourceRectangle = new Rectangle(value ? ((toggleTexture.Width - 2) / 2 + 2) : 0, 0, (toggleTexture.Width - 2) / 2, toggleTexture.Height);
+			Vector2 drawPosition = new Vector2(dimensions.X + dimensions.Width - sourceRectangle.Width - 10f, dimensions.Y + 8f);
+			spriteBatch.Draw(toggleTexture, drawPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+		}
+	}
+
+	public class UIInputPanel : UIPanel
+	{
+		public string textInputHint = string.Empty;
+		public string label = string.Empty;
+
+		public UIInputPanel()
+		{
+			Height.Set(40, 0f);
+		}
+
+		public override void OnInitialize()
+		{
+			var panel = new UIPanel();
+			panel.SetPadding(0);
+			panel.Width = Width;
+			panel.Height = Height;
+			Append(panel);
+
+			var uiLabel = new UIText(label)
+			{
+				Left = { Pixels = 10 },
+				Top = { Pixels = 10 }
+			};
+			panel.Append(uiLabel);
+
+			var textBoxBackground = new UIPanel();
+			textBoxBackground.SetPadding(0);
+			textBoxBackground.Top.Set(6f, 0f);
+			textBoxBackground.Left.Set(-10, .5f);
+			textBoxBackground.Width.Set(0, .5f);
+			textBoxBackground.Height.Set(30, 0f);
+			panel.Append(textBoxBackground);
+
+			var uIInputTextField = new UIFocusTextInput(textInputHint)
+			{
+				unfocusOnTab = true
+			};
+			uIInputTextField.Top.Set(5, 0f);
+			uIInputTextField.Left.Set(10, 0f);
+			uIInputTextField.Width.Set(-20, 1f);
+			uIInputTextField.Height.Set(20, 0);
+			textBoxBackground.Append(uIInputTextField);
 		}
 	}
 }
