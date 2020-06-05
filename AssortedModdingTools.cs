@@ -742,9 +742,8 @@ $@"{{
 		private static bool JustPressed(Keys key)
 		{
 			if (Main.inputText.IsKeyDown(key))
-			{
 				return !Main.oldInputText.IsKeyDown(key);
-			}
+			
 			return false;
 		}
 
