@@ -1,7 +1,7 @@
 ﻿[*.cs]
 
 # IDE0022: Use block body for methods
-csharp_style_expression_bodied_methods = true:warning
+csharp_style_expression_bodied_methods = true:silent
 
 # IDE0017: Simplify object initialization
 dotnet_style_object_initializer = false:suggestion

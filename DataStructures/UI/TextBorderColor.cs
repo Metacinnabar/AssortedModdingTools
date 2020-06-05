@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace AssortedModdingTools.DataStructures
+namespace AssortedModdingTools.DataStructures.UI
 {
 	public readonly struct TextBorderColor : IEquatable<TextBorderColor>
 	{

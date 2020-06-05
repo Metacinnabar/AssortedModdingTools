@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using AssortedModdingTools.DataStructures;
+using AssortedModdingTools.DataStructures.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {
