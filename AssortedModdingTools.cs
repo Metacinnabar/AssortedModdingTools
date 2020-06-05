@@ -18,6 +18,7 @@ using Terraria.GameInput;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using Terraria.DataStructures;
 
 namespace AssortedModdingTools
 {
@@ -462,6 +463,11 @@ namespace AssortedModdingTools
 			}.WithPadding(15);
 			uIElement.Append(uITextPanel);
 
+			var thicc = new UIBigTextWithBorder("EEEEEEEEEEEEEEEEEEEE", TextBorderColor.WhiteBlack);
+			thicc.HAlign = 0.1f;
+			thicc.VAlign = 0.1f;
+			uIElement.Append(thicc);
+
 			_messagePanel = new UITextPanel<string>("No Problems Found. If a problem occurs it will be shown here")
 			{
 				Width = { Percent = 1f },
@@ -490,16 +496,16 @@ namespace AssortedModdingTools
 
 			float top = 16;
 			_modName = createAndAppendTextInputWithLabel("Internal Name", "Type here");
-			_modName.OnTextChange += (a, b) => { _modName.SetText(_modName.CurrentString.Replace(" ", "")); };
+			_modName.OnTextChange += (a, b) => { _modName.SetText(_modName.currentText.Replace(" ", "")); };
 			_modDiplayName = createAndAppendTextInputWithLabel("Display Name", "Type here");
 			_modAuthor = createAndAppendTextInputWithLabel("Author(s)", "Type here");
 			//_basicSword = createAndAppendTextInputWithLabel("BasicSword (no spaces)", "Leave Blank to Skip");
-			_modName.OnTab += (a, b) => _modDiplayName.Focused = true;
-			_modDiplayName.OnTab += (a, b) => _modAuthor.Focused = true;
+			_modName.OnTab += (a, b) => _modDiplayName.focused = true;
+			_modDiplayName.OnTab += (a, b) => _modAuthor.focused = true;
 			//_modAuthor.OnTab += (a, b) => _basicSword.Focused = true;
 			//_basicSword.OnTab += (a, b) => _modName.Focused = true;
 
-			_modAuthor.OnTab += (a, b) => _modName.Focused = true;
+			_modAuthor.OnTab += (a, b) => _modName.focused = true;
 
 			UIFocusInputTextField createAndAppendTextInputWithLabel(string label, string hint)
 			{
@@ -561,10 +567,11 @@ namespace AssortedModdingTools
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			string modNameTrimmed = _modName.CurrentString.Trim();
+			string modNameTrimmed = _modName.currentText.Trim();
 			//string basicSwordTrimmed = _basicSword.CurrentString.Trim();
 			string sourceFolder = Path.Combine(ModSourcePath, modNameTrimmed);
 			var provider = CodeDomProvider.CreateProvider("C#");
+
 			if (Directory.Exists(sourceFolder))
 			{
 				_messagePanel.SetText("A mod with the same Internal Name already exists");
@@ -575,15 +582,15 @@ namespace AssortedModdingTools
 			}
 			//else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !provider.IsValidIdentifier(basicSwordTrimmed))
 			//	_messagePanel.SetText("BasicSword is invalid C# identifier. Remove spaces.");
-			else if (string.IsNullOrWhiteSpace(_modDiplayName.CurrentString))
+			else if (string.IsNullOrWhiteSpace(_modDiplayName.currentText))
 			{
 				_messagePanel.SetText("Display Name can't be empty");
 			}
-			else if (string.IsNullOrWhiteSpace(_modAuthor.CurrentString))
+			else if (string.IsNullOrWhiteSpace(_modAuthor.currentText))
 			{
 				_messagePanel.SetText("Author(s) can't be empty");
 			}
-			else if (string.IsNullOrWhiteSpace(_modAuthor.CurrentString))
+			else if (string.IsNullOrWhiteSpace(_modAuthor.currentText))
 			{
 				_messagePanel.SetText("Author(s) can't be empty");
 			}
@@ -617,14 +624,14 @@ namespace AssortedModdingTools
 		// TODO Let's embed all these files
 		private string GetModBuild()
 		{
-			return $"displayName = {_modDiplayName.CurrentString}" +
-				$"{Environment.NewLine}author = {_modAuthor.CurrentString}" +
+			return $"displayName = {_modDiplayName.currentText}" +
+				$"{Environment.NewLine}author = {_modAuthor.currentText}" +
 				$"{Environment.NewLine}version = 0.1";
 		}
 
 		private string GetModDescription()
 		{
-			return $"{_modDiplayName.CurrentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.";
+			return $"{_modDiplayName.currentText} is a pretty cool mod, it does...this. Modify this file with a description of your mod.";
 		}
 
 		private string GetModClass(string modNameTrimmed)
@@ -685,9 +692,9 @@ $@"{{
 	{
 		public delegate void EventHandler(object sender, EventArgs e);
 
-		public bool Focused;
+		public bool focused;
 
-		public string CurrentString = string.Empty;
+		public string currentText = string.Empty;
 
 		private readonly string hintText;
 
@@ -713,9 +720,9 @@ $@"{{
 			if (text == null)
 				text = string.Empty;
 			
-			if (CurrentString != text)
+			if (currentText != text)
 			{
-				CurrentString = text;
+				currentText = text;
 				OnTextChange?.Invoke(this, new EventArgs());
 			}
 		}
@@ -723,7 +730,7 @@ $@"{{
 		public override void Click(UIMouseEvent evt)
 		{
 			Main.clrInput();
-			Focused = true;
+			focused = true;
 		}
 
 		public override void Update(GameTime gameTime)
@@ -732,7 +739,7 @@ $@"{{
 
 			if (!ContainsPoint(point) && Main.mouseLeft)
 			{
-				Focused = false;
+				focused = false;
 				OnUnfocus?.Invoke(this, new EventArgs());
 			}
 
@@ -749,25 +756,25 @@ $@"{{
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			if (Focused)
+			if (focused)
 			{
 				PlayerInput.WritingText = true;
 				Main.instance.HandleIME();
-				string inputText = Main.GetInputText(CurrentString);
+				string inputText = Main.GetInputText(currentText);
 
-				if (!inputText.Equals(CurrentString))
+				if (!inputText.Equals(currentText))
 				{
-					CurrentString = inputText;
+					currentText = inputText;
 					OnTextChange?.Invoke(this, new EventArgs());
 				}
 				else
-					CurrentString = inputText;
+					currentText = inputText;
 
 				if (JustPressed(Keys.Tab))
 				{
 					if (unfocusOnTab)
 					{
-						Focused = false;
+						focused = false;
 						OnUnfocus?.Invoke(this, new EventArgs());
 					}
 
@@ -780,14 +787,14 @@ $@"{{
 					textBlinkerCount = 0;
 				}
 			}
-			string text = CurrentString;
+			string text = currentText;
 
-			if (textBlinkerState == 1 && Focused)
+			if (textBlinkerState == 1 && focused)
 				text += "|";
 			
 			CalculatedStyle dimensions = GetDimensions();
 
-			if (CurrentString.Length == 0 && !Focused)
+			if (currentText.Length == 0 && !focused)
 				Utils.DrawBorderString(spriteBatch, hintText, new Vector2(dimensions.X, dimensions.Y), Color.Gray);
 			else
 				Utils.DrawBorderString(spriteBatch, text, new Vector2(dimensions.X, dimensions.Y), Color.White);
@@ -796,6 +803,47 @@ $@"{{
 		public enum TextBlinkerState
 		{
 
+		}
+	}
+
+	public class UIBigTextWithBorder : UIElement
+	{
+		public string text = string.Empty;
+
+		public TextBorderColor textBorderColor = TextBorderColor.WhiteBlack;
+
+		public Vector2 origin = Vector2.Zero;
+
+		public float scale = 1f;
+
+		public UIBigTextWithBorder(string text, TextBorderColor? textBorderColor = null, Vector2? origin = null, float scale = 1f)
+		{
+			this.text = text;
+			this.textBorderColor = textBorderColor ?? TextBorderColor.WhiteBlack;
+			this.origin = origin ?? Vector2.Zero;
+			this.scale = scale;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch)
+		{
+			CalculatedStyle dimensions = GetDimensions();
+			Point16 pos = new Point16((short)dimensions.X, (short)dimensions.Y);
+
+			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, textBorderColor.textColor, textBorderColor.borderColor, origin, scale);
+		}
+	}
+
+	public readonly struct TextBorderColor
+	{
+		public static readonly TextBorderColor WhiteBlack = new TextBorderColor(Color.White, Color.Black);
+
+		public readonly Color textColor;
+		public readonly Color borderColor;
+
+		public TextBorderColor(Color textColor, Color borderColor)
+		{
+			this.textColor = textColor;
+			this.borderColor = borderColor;
 		}
 	}
 }
