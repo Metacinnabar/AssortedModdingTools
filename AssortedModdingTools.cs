@@ -791,10 +791,10 @@ $@"{{
 			else
 				Utils.DrawBorderString(spriteBatch, text, new Vector2(dimensions.X, dimensions.Y), Color.White);
 		}
-	}
 
-	public enum TextBlinkerState
-	{
+		public enum TextBlinkerState
+		{
 
+		}
 	}
 }
