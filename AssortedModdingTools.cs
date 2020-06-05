@@ -762,6 +762,7 @@ $@"{{
 				}
 				else
 					CurrentString = inputText;
+
 				if (JustPressed(Keys.Tab))
 				{
 					if (unfocusOnTab)
