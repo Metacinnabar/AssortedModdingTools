@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using AssortedModdingTools.DataStructures;
 using AssortedModdingTools.UI.Elements;
+using AssortedModdingTools.Extensions;
 
 namespace AssortedModdingTools
 {
@@ -489,7 +490,10 @@ namespace AssortedModdingTools
 
 			float top = 16;
 			_modName = createAndAppendTextInputWithLabel("Internal Name", "Type here");
-			_modName.OnTextChange += (a, b) => { _modName.SetText(_modName.currentText.Replace(" ", "")); };
+			_modName.OnTextChange += (a, b) =>
+			{
+				_modName.SetText(_modName.currentText.RemoveSpaces());
+			};
 			_modDiplayName = createAndAppendTextInputWithLabel("Display Name", "Type here");
 			_modAuthor = createAndAppendTextInputWithLabel("Author(s)", "Type here");
 			//_basicSword = createAndAppendTextInputWithLabel("BasicSword (no spaces)", "Leave Blank to Skip");

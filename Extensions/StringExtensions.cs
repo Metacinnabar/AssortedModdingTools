@@ -2,9 +2,6 @@
 {
 	public static partial class Extensions
 	{
-		public static void RemoveSpaces(this string str)
-		{
-			str.Replace(" ", "");
-		}
+		public static string RemoveSpaces(this string str) => str.Replace(" ", "");
 	}
 }
