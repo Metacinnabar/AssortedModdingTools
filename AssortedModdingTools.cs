@@ -528,7 +528,7 @@ namespace AssortedModdingTools
 
 				var uIInputTextField = new UIFocusInputTextField(hint)
 				{
-					UnfocusOnTab = true
+					unfocusOnTab = true
 				};
 				uIInputTextField.Top.Set(5, 0f);
 				uIInputTextField.Left.Set(10, 0f); //10
@@ -685,21 +685,17 @@ $@"{{
 	{
 		public delegate void EventHandler(object sender, EventArgs e);
 
-		internal bool Focused;
+		public bool Focused;
 
-		internal string CurrentString = "";
+		public string CurrentString = string.Empty;
 
-		private readonly string _hintText;
+		private readonly string hintText;
 
-		private int _textBlinkerCount;
+		private int textBlinkerCount;
 
-		private int _textBlinkerState;
+		private int textBlinkerState;
 
-		public bool UnfocusOnTab
-		{
-			get;
-			internal set;
-		}
+		public bool unfocusOnTab;
 
 		public event EventHandler OnTextChange;
 
@@ -709,44 +705,37 @@ $@"{{
 
 		public UIFocusInputTextField(string hintText)
 		{
-			this._hintText = hintText;
+			this.hintText = hintText;
 		}
 
 		public void SetText(string text)
 		{
 			if (text == null)
+				text = string.Empty;
+			
+			if (CurrentString != text)
 			{
-				text = "";
-			}
-			if (this.CurrentString != text)
-			{
-				this.CurrentString = text;
-				EventHandler onTextChange = this.OnTextChange;
-				if (onTextChange != null)
-				{
-					onTextChange(this, new EventArgs());
-				}
+				CurrentString = text;
+				OnTextChange?.Invoke(this, new EventArgs());
 			}
 		}
 
 		public override void Click(UIMouseEvent evt)
 		{
 			Main.clrInput();
-			this.Focused = true;
+			Focused = true;
 		}
 
 		public override void Update(GameTime gameTime)
 		{
-			Vector2 point = new Vector2((float)Main.mouseX, (float)Main.mouseY);
-			if (!this.ContainsPoint(point) && Main.mouseLeft)
+			Vector2 point = new Vector2(Main.mouseX, Main.mouseY);
+
+			if (!ContainsPoint(point) && Main.mouseLeft)
 			{
-				this.Focused = false;
-				EventHandler onUnfocus = this.OnUnfocus;
-				if (onUnfocus != null)
-				{
-					onUnfocus(this, new EventArgs());
-				}
+				Focused = false;
+				OnUnfocus?.Invoke(this, new EventArgs());
 			}
+
 			base.Update(gameTime);
 		}
 
@@ -761,61 +750,52 @@ $@"{{
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			if (this.Focused)
+			if (Focused)
 			{
 				PlayerInput.WritingText = true;
 				Main.instance.HandleIME();
-				string inputText = Main.GetInputText(this.CurrentString);
-				if (!inputText.Equals(this.CurrentString))
+				string inputText = Main.GetInputText(CurrentString);
+
+				if (!inputText.Equals(CurrentString))
 				{
-					this.CurrentString = inputText;
-					EventHandler onTextChange = this.OnTextChange;
-					if (onTextChange != null)
-					{
-						onTextChange(this, new EventArgs());
-					}
+					CurrentString = inputText;
+					OnTextChange?.Invoke(this, new EventArgs());
 				}
 				else
+					CurrentString = inputText;
+				if (JustPressed(Keys.Tab))
 				{
-					this.CurrentString = inputText;
-				}
-				if (UIFocusInputTextField.JustPressed(Keys.Tab))
-				{
-					if (this.UnfocusOnTab)
+					if (unfocusOnTab)
 					{
-						this.Focused = false;
-						EventHandler onUnfocus = this.OnUnfocus;
-						if (onUnfocus != null)
-						{
-							onUnfocus(this, new EventArgs());
-						}
+						Focused = false;
+						OnUnfocus?.Invoke(this, new EventArgs());
 					}
-					EventHandler onTab = this.OnTab;
-					if (onTab != null)
-					{
-						onTab(this, new EventArgs());
-					}
+
+					OnTab?.Invoke(this, new EventArgs());
 				}
-				if (++this._textBlinkerCount >= 20)
+
+				if (++textBlinkerCount >= 20)
 				{
-					this._textBlinkerState = (this._textBlinkerState + 1) % 2;
-					this._textBlinkerCount = 0;
+					textBlinkerState = (textBlinkerState + 1) % 2;
+					textBlinkerCount = 0;
 				}
 			}
-			string text = this.CurrentString;
-			if (this._textBlinkerState == 1 && this.Focused)
-			{
+			string text = CurrentString;
+
+			if (textBlinkerState == 1 && Focused)
 				text += "|";
-			}
-			CalculatedStyle dimensions = base.GetDimensions();
-			if (this.CurrentString.Length == 0 && !this.Focused)
-			{
-				Utils.DrawBorderString(spriteBatch, this._hintText, new Vector2(dimensions.X, dimensions.Y), Color.Gray, 1f, 0f, 0f, -1);
-			}
+			
+			CalculatedStyle dimensions = GetDimensions();
+
+			if (CurrentString.Length == 0 && !Focused)
+				Utils.DrawBorderString(spriteBatch, hintText, new Vector2(dimensions.X, dimensions.Y), Color.Gray);
 			else
-			{
-				Utils.DrawBorderString(spriteBatch, text, new Vector2(dimensions.X, dimensions.Y), Color.White, 1f, 0f, 0f, -1);
-			}
+				Utils.DrawBorderString(spriteBatch, text, new Vector2(dimensions.X, dimensions.Y), Color.White);
 		}
+	}
+
+	public enum TextBlinkerState
+	{
+
 	}
 }
