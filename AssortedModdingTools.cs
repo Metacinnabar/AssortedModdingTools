@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Terraria.DataStructures;
+using AssortedModdingTools.DataStructures;
 
 namespace AssortedModdingTools
 {
