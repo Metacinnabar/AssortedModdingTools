@@ -24,6 +24,7 @@ using Terraria.ModLoader.Config.UI;
 using System.Collections;
 using Terraria.ModLoader.Config;
 using Terraria.UI.Chat;
+using System.Runtime.InteropServices;
 
 namespace AssortedModdingTools
 {
@@ -169,6 +170,7 @@ namespace AssortedModdingTools
 				{
 					Main.PlaySound(SoundID.MenuOpen);
 					Main.menuMode = (int)MenuMode.ModdingTools;
+					ModdingToolsMenu.OnModdingToolsButtonClick();
 				}
 			}
 
@@ -411,6 +413,10 @@ namespace AssortedModdingTools
 		}
 
 		private void DrawModdingToolsMenu()
+		{
+		}
+
+		public static void OnModdingToolsButtonClick()
 		{
 			Main.MenuUI.SetState(createMod);
 			Main.menuMode = 888;
