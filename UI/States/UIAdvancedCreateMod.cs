@@ -89,12 +89,23 @@ namespace AssortedModdingTools.UI.States
 			authors = CreateAndAppendTextInputWithLabel("Author(s)", "Type here", mainPanel, ref top);
 			authors.OnTab += (a, b) => internalName.focused = true;
 
-			var boolElement = new UIBoolButton("Is art dead?");
+			AddToggle("Test 1?", mainPanel, ref top);
+			AddToggle("Test 2?", mainPanel, ref top);
+			AddToggle("Test 3?", mainPanel, ref top);
+			AddToggle("Test 4?", mainPanel, ref top);
+			AddToggle("Test 5?", mainPanel, ref top);
+		}
+
+		private static void AddToggle(string text, UIPanel mainPanel, ref float top, int h = 40)
+		{
+			var boolElement = new UITextVisualTogglePanel(text);
 			boolElement.SetPadding(0);
 			boolElement.Width.Set(0, 1f);
-			boolElement.Height.Set(40, 0f);
+			boolElement.Height.Set(h, 0f);
 			boolElement.Top.Set(top, 0f);
 			mainPanel.Append(boolElement);
+
+			top += h + 6;
 		}
 
 		private static UIFocusTextInput CreateAndAppendTextInputWithLabel(string label, string hint, UIPanel mainPanel, ref float top)
