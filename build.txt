@@ -1,0 +1,3 @@
+displayName = GoodPro712's Modding Tools
+author = GoodPro712
+version = 0.1
