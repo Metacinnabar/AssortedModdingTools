@@ -832,18 +832,4 @@ $@"{{
 			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, textBorderColor.textColor, textBorderColor.borderColor, origin, scale);
 		}
 	}
-
-	public readonly struct TextBorderColor
-	{
-		public static readonly TextBorderColor WhiteBlack = new TextBorderColor(Color.White, Color.Black);
-
-		public readonly Color textColor;
-		public readonly Color borderColor;
-
-		public TextBorderColor(Color textColor, Color borderColor)
-		{
-			this.textColor = textColor;
-			this.borderColor = borderColor;
-		}
-	}
 }
