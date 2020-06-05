@@ -13,13 +13,10 @@ using Terraria.UI;
 using Terraria.ModLoader.UI;
 using System.IO;
 using System.CodeDom.Compiler;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameInput;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using Terraria.DataStructures;
 using AssortedModdingTools.DataStructures;
+using AssortedModdingTools.UI.Elements;
 
 namespace AssortedModdingTools
 {
@@ -430,9 +427,9 @@ namespace AssortedModdingTools
 	public class UIAdvancedCreateMod : UIState
 	{
 		private UITextPanel<string> _messagePanel;
-		private UIFocusInputTextField _modName;
-		private UIFocusInputTextField _modDiplayName;
-		private UIFocusInputTextField _modAuthor;
+		private UIFocusTextInput _modName;
+		private UIFocusTextInput _modDiplayName;
+		private UIFocusTextInput _modAuthor;
 		//private UIFocusInputTextField _basicSword;
 
 		public override void OnInitialize()
@@ -463,11 +460,6 @@ namespace AssortedModdingTools
 				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15);
 			uIElement.Append(uITextPanel);
-
-			var thicc = new UIBigTextWithBorder("EEEEEEEEEEEEEEEEEEEE", TextBorderColor.WhiteBlack);
-			thicc.HAlign = 0.1f;
-			thicc.VAlign = 0.1f;
-			uIElement.Append(thicc);
 
 			_messagePanel = new UITextPanel<string>("No Problems Found. If a problem occurs it will be shown here")
 			{
@@ -508,7 +500,7 @@ namespace AssortedModdingTools
 
 			_modAuthor.OnTab += (a, b) => _modName.focused = true;
 
-			UIFocusInputTextField createAndAppendTextInputWithLabel(string label, string hint)
+			UIFocusTextInput createAndAppendTextInputWithLabel(string label, string hint)
 			{
 				var panel = new UIPanel();
 				panel.SetPadding(0);
@@ -533,7 +525,7 @@ namespace AssortedModdingTools
 				textBoxBackground.Height.Set(30, 0f);
 				panel.Append(textBoxBackground);
 
-				var uIInputTextField = new UIFocusInputTextField(hint)
+				var uIInputTextField = new UIFocusTextInput(hint)
 				{
 					unfocusOnTab = true
 				};
@@ -686,151 +678,6 @@ $@"{{
     }}
   }}
 }}";
-		}
-	}
-
-	public class UIFocusInputTextField : UIElement
-	{
-		public delegate void EventHandler(object sender, EventArgs e);
-
-		public bool focused;
-
-		public string currentText = string.Empty;
-
-		private readonly string hintText;
-
-		private int textBlinkerCount;
-
-		private int textBlinkerState;
-
-		public bool unfocusOnTab;
-
-		public event EventHandler OnTextChange;
-
-		public event EventHandler OnUnfocus;
-
-		public event EventHandler OnTab;
-
-		public UIFocusInputTextField(string hintText)
-		{
-			this.hintText = hintText;
-		}
-
-		public void SetText(string text)
-		{
-			if (text == null)
-				text = string.Empty;
-			
-			if (currentText != text)
-			{
-				currentText = text;
-				OnTextChange?.Invoke(this, new EventArgs());
-			}
-		}
-
-		public override void Click(UIMouseEvent evt)
-		{
-			Main.clrInput();
-			focused = true;
-		}
-
-		public override void Update(GameTime gameTime)
-		{
-			Vector2 point = new Vector2(Main.mouseX, Main.mouseY);
-
-			if (!ContainsPoint(point) && Main.mouseLeft)
-			{
-				focused = false;
-				OnUnfocus?.Invoke(this, new EventArgs());
-			}
-
-			base.Update(gameTime);
-		}
-
-		private static bool JustPressed(Keys key)
-		{
-			if (Main.inputText.IsKeyDown(key))
-				return !Main.oldInputText.IsKeyDown(key);
-			
-			return false;
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			if (focused)
-			{
-				PlayerInput.WritingText = true;
-				Main.instance.HandleIME();
-				string inputText = Main.GetInputText(currentText);
-
-				if (!inputText.Equals(currentText))
-				{
-					currentText = inputText;
-					OnTextChange?.Invoke(this, new EventArgs());
-				}
-				else
-					currentText = inputText;
-
-				if (JustPressed(Keys.Tab))
-				{
-					if (unfocusOnTab)
-					{
-						focused = false;
-						OnUnfocus?.Invoke(this, new EventArgs());
-					}
-
-					OnTab?.Invoke(this, new EventArgs());
-				}
-
-				if (++textBlinkerCount >= 20)
-				{
-					textBlinkerState = (textBlinkerState + 1) % 2;
-					textBlinkerCount = 0;
-				}
-			}
-			string text = currentText;
-
-			if (textBlinkerState == 1 && focused)
-				text += "|";
-			
-			CalculatedStyle dimensions = GetDimensions();
-
-			if (currentText.Length == 0 && !focused)
-				Utils.DrawBorderString(spriteBatch, hintText, new Vector2(dimensions.X, dimensions.Y), Color.Gray);
-			else
-				Utils.DrawBorderString(spriteBatch, text, new Vector2(dimensions.X, dimensions.Y), Color.White);
-		}
-
-		public enum TextBlinkerState
-		{
-
-		}
-	}
-
-	public class UIBigTextWithBorder : UIElement
-	{
-		public string text = string.Empty;
-
-		public TextBorderColor textBorderColor = TextBorderColor.WhiteBlack;
-
-		public Vector2 origin = Vector2.Zero;
-
-		public float scale = 1f;
-
-		public UIBigTextWithBorder(string text, TextBorderColor? textBorderColor = null, Vector2? origin = null, float scale = 1f)
-		{
-			this.text = text;
-			this.textBorderColor = textBorderColor ?? TextBorderColor.WhiteBlack;
-			this.origin = origin ?? Vector2.Zero;
-			this.scale = scale;
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			CalculatedStyle dimensions = GetDimensions();
-			Point16 pos = new Point16((short)dimensions.X, (short)dimensions.Y);
-
-			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, textBorderColor.textColor, textBorderColor.borderColor, origin, scale);
 		}
 	}
 }
