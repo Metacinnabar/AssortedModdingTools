@@ -18,9 +18,9 @@ namespace AssortedModdingTools.UI.States
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
 		private UITextPanel<string> infoTextPanel;
-		private UIFocusTextInput internalName;
-		private UIFocusTextInput displayName;
-		private UIFocusTextInput authors;
+		private UIFocusTextInputPanel internalNamePanel;
+		private UIFocusTextInputPanel displayNamePanel;
+		private UIFocusTextInputPanel authorsPanel;
 
 		public override void OnInitialize()
 		{
@@ -79,21 +79,18 @@ namespace AssortedModdingTools.UI.States
 
 			float top = 16;
 
-			internalName = CreateAndAppendTextInputWithLabel("Internal Name", "Type here", mainPanel, ref top);
-			internalName.OnTextChange += (a, b) => internalName.SetText(internalName.currentText.RemoveSpaces());
-			internalName.OnTab += (a, b) => displayName.focused = true;
+			internalNamePanel = AddInput("Internal Name", mainPanel, ref top, true);
 
-			displayName = CreateAndAppendTextInputWithLabel("Display Name", "Type here", mainPanel, ref top);
-			displayName.OnTab += (a, b) => authors.focused = true;
+			displayNamePanel = AddInput("Display Name", mainPanel, ref top);
 
-			authors = CreateAndAppendTextInputWithLabel("Author(s)", "Type here", mainPanel, ref top);
-			authors.OnTab += (a, b) => internalName.focused = true;
+			authorsPanel = AddInput("Author(s)", mainPanel, ref top);
 
 			AddToggle("Test 1?", mainPanel, ref top);
 			AddToggle("Test 2?", mainPanel, ref top);
 			AddToggle("Test 3?", mainPanel, ref top);
 			AddToggle("Test 4?", mainPanel, ref top);
 			AddToggle("Test 5?", mainPanel, ref top);
+			AddInput("Test 6?", mainPanel, ref top);
 		}
 
 		private static void AddToggle(string text, UIPanel mainPanel, ref float top, int h = 40)
@@ -108,52 +105,39 @@ namespace AssortedModdingTools.UI.States
 			top += h + 6;
 		}
 
-		private static UIFocusTextInput CreateAndAppendTextInputWithLabel(string label, string hint, UIPanel mainPanel, ref float top)
+		private static UIFocusTextInputPanel AddInput(string text, UIPanel mainPanel, ref float top, bool noSpaces = false, int h = 40)
 		{
-			var panel = new UIPanel();
-			panel.SetPadding(0);
-			panel.Width.Set(0, 1f);
-			panel.Height.Set(40, 0f);
-			panel.Top.Set(top, 0f);
-			mainPanel.Append(panel);
+			var boolElement = new UIFocusTextInputPanel(text);
+			boolElement.SetPadding(0);
+			boolElement.Width.Set(0, 1f);
+			boolElement.Height.Set(h, 0f);
+			boolElement.Top.Set(top, 0f);
 
-			top += 46;
-
-			var modNameText = new UIText(label)
+			if (noSpaces)
 			{
-				Left = { Pixels = 10 },
-				Top = { Pixels = 10 }
-			};
+				//boolElement.OnTextChange += (a, b) =>
+				//{
+				//	boolElement.SetText(boolElement.currentText.RemoveSpaces());
+				//};
+			}
 
-			panel.Append(modNameText);
+			mainPanel.Append(boolElement);
 
-			var textBoxBackground = new UIPanel();
-			textBoxBackground.SetPadding(0);
-			textBoxBackground.Top.Set(6f, 0f);
-			textBoxBackground.Left.Set(-10, .5f);
-			textBoxBackground.Width.Set(0, .5f);
-			textBoxBackground.Height.Set(30, 0f);
-			panel.Append(textBoxBackground);
-
-			var uIInputTextField = new UIFocusTextInput(hint)
-			{
-				unfocusOnTab = true
-			};
-			uIInputTextField.Top.Set(5, 0f);
-			uIInputTextField.Left.Set(10, 0f); //10
-			uIInputTextField.Width.Set(-20, 1f);
-			uIInputTextField.Height.Set(20, 0);
-			textBoxBackground.Append(uIInputTextField);
-
-			return uIInputTextField;
+			top += h + 6;
+			return boolElement;
 		}
 
 		public override void OnActivate()
 		{
 			base.OnActivate();
-			internalName.SetText("");
-			displayName.SetText("");
-			authors.SetText("");
+			internalNamePanel.SetText("");
+			displayNamePanel.SetText("");
+			authorsPanel.SetText("");
+
+			internalNamePanel.OnTextChange += (a, b) =>
+			{
+				internalNamePanel.SetText(internalNamePanel.currentText.RemoveSpaces());
+			};
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -164,7 +148,7 @@ namespace AssortedModdingTools.UI.States
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			string modNameTrimmed = internalName.currentText.Trim();
+			string modNameTrimmed = internalNamePanel.currentText.Trim();
 			string sourceFolder = Path.Combine(ModSourcePath, modNameTrimmed);
 
 			CodeDomProvider provider = CodeDomProvider.CreateProvider("C#");
@@ -177,15 +161,15 @@ namespace AssortedModdingTools.UI.States
 			{
 				infoTextPanel.SetText("Internal Name is an invalid C# identifier. Remove spaces");
 			}
-			else if (string.IsNullOrWhiteSpace(displayName.currentText))
+			else if (string.IsNullOrWhiteSpace(displayNamePanel.currentText))
 			{
 				infoTextPanel.SetText("Display Name can't be empty");
 			}
-			else if (string.IsNullOrWhiteSpace(authors.currentText))
+			else if (string.IsNullOrWhiteSpace(authorsPanel.currentText))
 			{
 				infoTextPanel.SetText("Author(s) can't be empty");
 			}
-			else if (string.IsNullOrWhiteSpace(authors.currentText))
+			else if (string.IsNullOrWhiteSpace(authorsPanel.currentText))
 			{
 				infoTextPanel.SetText("Author(s) can't be empty");
 			}
@@ -202,7 +186,7 @@ namespace AssortedModdingTools.UI.States
 				string propertiesFolder = Path.Combine(sourceFolder, "Properties");
 				Directory.CreateDirectory(propertiesFolder);
 				File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), GetLaunchSettings());
-				
+
 				infoTextPanel.SetText("Mod created! Opening folder");
 				Process.Start(sourceFolder);
 			}
@@ -210,9 +194,9 @@ namespace AssortedModdingTools.UI.States
 
 		// TODO Let's embed all these files
 		#region Files
-		private string GetModBuild() => $"displayName = {displayName.currentText}\nauthor = {authors.currentText}\nversion = 1.0\nhomepage = ";
+		private string GetModBuild() => $"displayName = {displayNamePanel.currentText}\nauthor = {authorsPanel.currentText}\nversion = 1.0\nhomepage = ";
 
-		private string GetModDescription() => $"{displayName.currentText}...\n\nVersion Changelog:\n\n- Initial Release (v1.0)";
+		private string GetModDescription() => $"{displayNamePanel.currentText}...\n\nVersion Changelog:\n\n- Initial Release (v1.0)";
 
 		private string GetModClass(string modNameTrimmed)
 		{
