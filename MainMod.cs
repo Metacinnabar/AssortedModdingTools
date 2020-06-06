@@ -31,7 +31,8 @@ namespace AssortedModdingTools
 
 		private void Main_OnTick()
 		{
-			FPSCounter.debugText = "Main Menu State: " + Main.menuMode;
+			if (FPSCounter != null && Main.gameMenu)
+				FPSCounter.debugText = "Main Menu State: " + Main.menuMode;
 		}
 
 		public override void Unload()

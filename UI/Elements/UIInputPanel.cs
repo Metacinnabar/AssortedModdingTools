@@ -10,18 +10,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AssortedModdingTools.UI.Elements
 {
-	public class UIFocusTextInputPanel : UIPanel
+	public class UIFocusTextInputPanel : UIFocusTextInput
 	{
 		public string label = string.Empty;
 
-		public UIFocusTextInputPanel(string label, string textInputHint = "Type here")
+		protected UIPanel TextBoxPanel;
+
+		public UIFocusTextInputPanel(string label, string textInputHint = "Type here") : base(textInputHint)
 		{
-			this.hintText = textInputHint;
+			hintText = textInputHint;
 			this.label = label;
-			Top.Set(5, 0f);
-			Left.Set(10, 0f);
-			Width.Set(-20, 1f);
-			Height.Set(20, 0);
 		}
 
 		public override void OnActivate()
@@ -31,7 +29,7 @@ namespace AssortedModdingTools.UI.Elements
 			panel.SetPadding(0);
 			panel.Width = Width;
 			panel.Height = Height;
-			Append(panel);
+			panel.Append(this);
 
 			var uiLabel = new UIText(label)
 			{
@@ -40,120 +38,33 @@ namespace AssortedModdingTools.UI.Elements
 			};
 			panel.Append(uiLabel);
 
-			var textBoxBackground = new UIPanel();
-			textBoxBackground.SetPadding(0);
-			textBoxBackground.Top.Set(6f, 0f);
-			textBoxBackground.Left.Set(-10, .5f);
-			textBoxBackground.Width.Set(0, .5f);
-			textBoxBackground.Height.Set(30, 0f);
-			panel.Append(textBoxBackground);
-		}
-
-		public delegate void EventHandler(object sender, EventArgs e);
-
-		public bool focused;
-
-		public string currentText = string.Empty;
-
-		private readonly string hintText;
-
-		private int textBlinkerCount;
-
-		private int textBlinkerState;
-
-		public bool unfocusOnTab = false;
-
-		public event EventHandler OnTextChange;
-
-		public event EventHandler OnUnfocus;
-
-		public event EventHandler OnTab;
-
-		public void SetText(string text)
-		{
-			if (text == null)
-				text = string.Empty;
-
-			if (currentText != text)
-			{
-				currentText = text;
-				OnTextChange?.Invoke(this, new EventArgs());
-			}
-		}
-
-		public override void Click(UIMouseEvent evt)
-		{
-			Main.clrInput();
-			focused = true;
-		}
-
-		public override void Update(GameTime gameTime)
-		{
-			Vector2 point = new Vector2(Main.mouseX, Main.mouseY);
-
-			if (!ContainsPoint(point) && Main.mouseLeft)
-			{
-				focused = false;
-				OnUnfocus?.Invoke(this, new EventArgs());
-			}
-
-			base.Update(gameTime);
-		}
-
-		private static bool JustPressed(Keys key)
-		{
-			if (Main.inputText.IsKeyDown(key))
-				return !Main.oldInputText.IsKeyDown(key);
-
-			return false;
+			TextBoxPanel = new UIPanel();
+			TextBoxPanel.SetPadding(0);
+			TextBoxPanel.Top.Set(6f, 0f);
+			TextBoxPanel.Left.Set(-10, .5f);
+			TextBoxPanel.Width.Set(0, .5f);
+			TextBoxPanel.Height.Set(30, 0f);
+			panel.Append(TextBoxPanel);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
+			base.DrawChildren(spriteBatch);
 			base.DrawSelf(spriteBatch);
+		}
 
-			if (focused)
-			{
-				PlayerInput.WritingText = true;
-				Main.instance.HandleIME();
-				string inputText = Main.GetInputText(currentText);
+		protected override void DrawHint(SpriteBatch spriteBatch, string text)
+		{
+			if (TextBoxPanel == null)
+				return;
 
-				if (!inputText.Equals(currentText))
-				{
-					currentText = inputText;
-					OnTextChange?.Invoke(this, new EventArgs());
-				}
-				else
-					currentText = inputText;
-
-				if (JustPressed(Keys.Tab))
-				{
-					if (unfocusOnTab)
-					{
-						focused = false;
-						OnUnfocus?.Invoke(this, new EventArgs());
-					}
-
-					OnTab?.Invoke(this, new EventArgs());
-				}
-
-				if (++textBlinkerCount >= 20)
-				{
-					textBlinkerState = (textBlinkerState + 1) % 2;
-					textBlinkerCount = 0;
-				}
-			}
-			string text = currentText;
-
-			if (textBlinkerState == 1 && focused)
-				text += "|";
-
-			CalculatedStyle dimensions = GetDimensions();
+			CalculatedStyle dimensions = TextBoxPanel.GetDimensions();
+			Vector2 pos = new Vector2(dimensions.X + 10, dimensions.Y + 5);
 
 			if (currentText.Length == 0 && !focused)
-				Utils.DrawBorderString(spriteBatch, hintText, new Vector2(dimensions.X, dimensions.Y), Color.Gray);
+				Utils.DrawBorderString(spriteBatch, hintText, pos, Color.Gray);
 			else
-				Utils.DrawBorderString(spriteBatch, text, new Vector2(dimensions.X, dimensions.Y), Color.White);
+				Utils.DrawBorderString(spriteBatch, text, pos, Color.White);
 		}
 	}
 }

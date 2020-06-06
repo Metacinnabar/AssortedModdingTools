@@ -21,6 +21,7 @@ namespace AssortedModdingTools.Systems.Misc
 
 		internal void Unload()
 		{
+			Main.OnPostDraw -= Main_OnPostDraw;
 			frameCounter = null;
 		}
 
@@ -28,7 +29,7 @@ namespace AssortedModdingTools.Systems.Misc
 
 		private void Main_DrawFPS(On.Terraria.Main.orig_DrawFPS orig, Main self)
 		{
-			string text = $"Avg. FPS: {(int)Math.Round(frameCounter.AverageFramesPerSecond)}";
+			string text = $"Avg. FPS: {(int)frameCounter.AverageFramesPerSecond}";
 
 			if (debugText != string.Empty)
 				text += "\nDebug Text: " + debugText;

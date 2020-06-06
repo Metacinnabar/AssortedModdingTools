@@ -16,11 +16,11 @@ namespace AssortedModdingTools.UI.Elements
 
 		public string currentText = string.Empty;
 
-		private readonly string hintText;
+		protected string hintText;
 
-		private int textBlinkerCount;
+		protected int textBlinkerCount;
 
-		private int textBlinkerState;
+		protected int textBlinkerState;
 
 		public bool unfocusOnTab;
 
@@ -76,6 +76,7 @@ namespace AssortedModdingTools.UI.Elements
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
+			//base.DrawChildren(spriteBatch);
 			if (focused)
 			{
 				PlayerInput.WritingText = true;
@@ -107,11 +108,17 @@ namespace AssortedModdingTools.UI.Elements
 					textBlinkerCount = 0;
 				}
 			}
+
 			string text = currentText;
 
 			if (textBlinkerState == 1 && focused)
 				text += "|";
-			
+
+			DrawHint(spriteBatch, text);
+		}
+
+		protected virtual void DrawHint(SpriteBatch spriteBatch, string text)
+		{
 			CalculatedStyle dimensions = GetDimensions();
 
 			if (currentText.Length == 0 && !focused)

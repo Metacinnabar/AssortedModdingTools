@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace AssortedModdingTools.ItemTemplates
 {
-	public class TemplateItem : ModItem
+	public abstract class TemplateItem : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

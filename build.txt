@@ -1,4 +1,4 @@
 displayName = GoodPro712's Modding Tools
 author = GoodPro712
 version = 1.0
-buildIgnore = build.txt, .gitattributes, .gitignore, .git/, .vs/, .idea/, bin/, obj/, Thumbs.db, ItemTemplates/
+buildIgnore = ItemTemplates/, build.txt, .gitattributes, .gitignore, .git/, .vs/, .idea/, bin/, obj/, Thumbs.db
