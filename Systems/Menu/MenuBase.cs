@@ -4,38 +4,14 @@ using System.Collections.Generic;
 
 namespace AssortedModdingTools
 {
-	public abstract class MenuBase : HookBase
+	//Todo move to systembase
+	public abstract class MenuBase : SystemBase
 	{
-		internal static class MenuBaseHookLoader
-		{
-			public static List<MenuBase> menuBases;
+		public static Action HookPreDrawMenu;
+		public static Action HookPostDrawMenu;
 
-			public static void Initialize()
-			{
-				menuBases = new List<MenuBase>();
-			}
+		public virtual void PreDrawMenu() { }
 
-			public static void CallPreDrawMenu()
-			{
-				for (int i = 0; i < menuBases.Count; i++)
-				{
-					MenuBase menuBase = menuBases[i];
-					menuBase.HookPreDrawMenu?.Invoke();
-				}
-			}
-
-			public static void CallPostDrawMenu()
-			{
-				for (int i = 0; i < menuBases.Count; i++)
-				{
-					MenuBase menuBase = menuBases[i];
-					menuBase.HookPostDrawMenu?.Invoke();
-				}
-			}
-		}
-
-		public event Action HookPreDrawMenu;
-
-		public event Action HookPostDrawMenu;
+		public virtual void PostDrawMenu() { }
 	}
 }

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace AssortedModdingTools.Systems.Menu
 {
-	public class ModdingToolsMenu : MenuBase, IHookBase
+	/*public class ModdingToolsMenu : MenuBase
 	{
 		public static UIAdvancedCreateMod createMod = new UIAdvancedCreateMod();
 
@@ -31,15 +31,6 @@ namespace AssortedModdingTools.Systems.Menu
 			Main.menuMode = 888;
 		}
 
-		public void Load()
-		{
-			BaseHookLoader.hookBases.Add(this);
-			MenuBaseHookLoader.menuBases.Add(this);
-			HookOnLoad += OnLoad;
-			HookPreDrawMenu += PreDrawMenu;
-			HookOnUnload += ModdingToolsMenu_HookOnUnload;
-		}
-
 		private void ModdingToolsMenu_HookOnUnload() => createMod = null;
-	}
+	}*/
 }

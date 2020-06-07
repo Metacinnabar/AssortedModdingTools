@@ -14,8 +14,10 @@ using Terraria.ModLoader;
 namespace AssortedModdingTools.Systems.Menu
 {
 	//TODO display somewhere amount of mods loaded
-	public static class MenuSwap
+	public class MenuSystem : SystemBase
 	{
+		private static int previousMenuMode;
+
 		public delegate void Hook_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
 
 		public delegate void Orig_AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
@@ -32,20 +34,32 @@ namespace AssortedModdingTools.Systems.Menu
 			}
 		}
 
-		internal static void Load()
+		public override void Load()
 		{
 			On_AddMenuButtons += Interface_AddMenuButtons;
 			IL.Terraria.Main.DrawMenu += MoveLogoLower;
 			On.Terraria.Main.DrawMenu += DrawMenuHookCalling;
 		}
 
-		internal static void Unload() => On_AddMenuButtons -= Interface_AddMenuButtons;
+		public override void OnUpdate()
+		{
+			if (previousMenuMode != Main.menuMode)
+				HookOnMenuModeChange(previousMenuMode);
+
+			previousMenuMode = Main.menuMode;
+		}
+
+		public override void Unload()
+		{
+			On_AddMenuButtons -= Interface_AddMenuButtons;
+			previousMenuMode = -1;
+		}
 
 		private static void DrawMenuHookCalling(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
-			MenuBase.MenuBaseHookLoader.CallPreDrawMenu();
+			//MenuBase.HookPreDrawMenu();
 			orig(self, gameTime);
-			MenuBase.MenuBaseHookLoader.CallPostDrawMenu();
+			//MenuBase.HookPostDrawMenu();
 		}
 
 		private static void Interface_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
