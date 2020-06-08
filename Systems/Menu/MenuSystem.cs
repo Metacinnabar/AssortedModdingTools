@@ -18,11 +18,11 @@ namespace AssortedModdingTools.Systems.Menu
 	{
 		private static int previousMenuMode;
 
-		public delegate void Hook_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
+		private delegate void Hook_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
 
-		public delegate void Orig_AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
+		private delegate void Orig_AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
 
-		public static event Hook_AddMenuButtons On_AddMenuButtons
+		private static event Hook_AddMenuButtons On_AddMenuButtons
 		{
 			add
 			{
@@ -38,7 +38,6 @@ namespace AssortedModdingTools.Systems.Menu
 		{
 			On_AddMenuButtons += Interface_AddMenuButtons;
 			IL.Terraria.Main.DrawMenu += MoveLogoLower;
-			On.Terraria.Main.DrawMenu += DrawMenuHookCalling;
 		}
 
 		public override void OnUpdate()
@@ -55,13 +54,6 @@ namespace AssortedModdingTools.Systems.Menu
 			previousMenuMode = -1;
 		}
 
-		private static void DrawMenuHookCalling(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
-		{
-			//MenuBase.HookPreDrawMenu();
-			orig(self, gameTime);
-			//MenuBase.HookPostDrawMenu();
-		}
-
 		private static void Interface_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
 			AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuMode.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods
@@ -70,7 +62,7 @@ namespace AssortedModdingTools.Systems.Menu
 			{
 				AddButton(Language.GetTextValue("tModLoader.MenuModSources"), delegate
 				{
-					bool ret = (bool)MainMod.Reflection.DeveloperModeReady.Invoke(null, new object[1]);
+					bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
 					Main.menuMode = ret ? 10001 : 10022;
 				}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 

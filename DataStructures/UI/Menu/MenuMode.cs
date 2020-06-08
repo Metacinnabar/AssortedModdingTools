@@ -4,21 +4,39 @@
 	{
 		None = -1,
 		Main = 0,
-		LanguageSelection = 1,
+		PlayerSelection = 1,
+		PlayerCreation = 2,
+		PlayerCreationCharacterName = 3,
+		WorldSelection = 6,
 		//2-9
 		WorldLoading = 10,
 		Settings = 11,
+		Multiplayer = 12,
+		EnterIPAddress = 13,
+		StartingServer = 14,
+		PlayerCreationHair = 17,
+		PlayerCreationEyes = 18,
+		PlayerCreationSkin = 19,
+		PlayerCreationClothes = 20,
+		PlayerCreationClothesShirt = 21,
+		PlayerCreationClothesUndershirt = 22,
+		PlayerCreationClothesPants = 23,
+		PlayerCreationClothesShoes = 24,
 		//12-24
 		CursorColorSettings = 25,
 		VolumeSettings = 26,
 		//27
 		ParallaxSetting = 28,
+		MultiplayerHostAndPlayPassword = 30,
 		//29-110
 		ResolutionSetting = 111,
 		GeneralSettings = 112,
+		ENterServerPort = 131,
+		PlayerCreationDifficulty = 222,
 		//113-251
 		CursorBorderColorSettings = 252,
 		//253-1110
+		MultiplayerHostAndPlaySettings = 889,
 		VideoSettings = 1111,
 		InterfaceSettings = 1112,
 		//1113-1124

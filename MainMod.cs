@@ -14,7 +14,6 @@ namespace AssortedModdingTools
 {
 	public class MainMod : Mod
 	{
-		public static ReflectionManager Reflection { get; private set; } = null;
 		public static FPSCounterSystem FPSCounter { get; private set; } = null;
 
 		private static SystemBase[] systems;
@@ -22,13 +21,11 @@ namespace AssortedModdingTools
 		public override void Load()
 		{
 			// Initialization
-			Reflection = new ReflectionManager();
 			FPSCounter = new FPSCounterSystem();
 			InitializeSystems();
 
 			// Loading
 			SystemBase.HookLoad();
-			Reflection.Load();
 			FPSCounter.Load();
 
 			//Events
@@ -59,11 +56,9 @@ namespace AssortedModdingTools
 		{
 			// Unloading
 			SystemBase.HookUnload();
-			Reflection?.Unload();
 			FPSCounter?.Unload();
 
 			// Field Nulling
-			Reflection = null;
 			FPSCounter = null;
 		}
 

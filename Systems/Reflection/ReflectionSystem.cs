@@ -7,18 +7,18 @@ namespace AssortedModdingTools.Systems.Reflection
 	/// <summary>
 	/// Object class handling all reflection. Make sure to null out fields in Unload
 	/// </summary>
-	public class ReflectionManager
+	public class ReflectionSystem : SystemBase
 	{
-		public Type ModCompile = null;
+		public static Type ModCompile = null;
 
-		public PropertyInfo DeveloperMode = null;
+		public static PropertyInfo DeveloperMode = null;
 
-		public MethodInfo DeveloperModeReady = null;
+		public static MethodInfo DeveloperModeReady = null;
 
 		/// <summary>
 		/// This is where you initialize any fields
 		/// </summary>
-		internal void Load()
+		public override void Load()
 		{
 			try
 			{
@@ -33,10 +33,11 @@ namespace AssortedModdingTools.Systems.Reflection
 		/// <summary>
 		/// This is where you unload any fields by nulling them.
 		/// </summary>
-		internal void Unload()
+		public override void Unload()
 		{
 			ModCompile = null;
 			DeveloperMode = null;
+			DeveloperModeReady = null;
 		}
 	}
 }
