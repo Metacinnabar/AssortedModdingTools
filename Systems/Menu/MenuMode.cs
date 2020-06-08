@@ -1,4 +1,4 @@
-﻿namespace AssortedModdingTools.DataStructures.UI.Menu
+﻿namespace AssortedModdingTools.Systems.Menu
 {
 	public enum MenuMode
 	{

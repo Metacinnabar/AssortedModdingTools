@@ -1,22 +1,16 @@
-﻿using AssortedModdingTools.DataStructures.UI.Menu;
-using AssortedModdingTools.UI.States;
+﻿using AssortedModdingTools.UI.States;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace AssortedModdingTools.Systems.Menu
 {
-	/*public class ModdingToolsMenu : MenuBase
+	public partial class MenuSystem : SystemBase
 	{
 		public static UIAdvancedCreateMod createMod = new UIAdvancedCreateMod();
 
-		private void OnLoad(Mod mod) => mod.Logger.Debug("Hook \"OnLoad\" was called!");
-
-		private void PreDrawMenu()
+		public override void PreDrawMenu()
 		{
 			if (Main.menuMode == (int)MenuMode.ModdingTools)
-			{
 				DrawModdingToolsMenu();
-			}
 		}
 
 		private void DrawModdingToolsMenu()
@@ -30,7 +24,5 @@ namespace AssortedModdingTools.Systems.Menu
 			Main.MenuUI.SetState(createMod);
 			Main.menuMode = 888;
 		}
-
-		private void ModdingToolsMenu_HookOnUnload() => createMod = null;
-	}*/
+	}
 }

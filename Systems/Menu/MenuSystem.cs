@@ -1,43 +1,31 @@
-﻿using AssortedModdingTools.DataStructures.UI.Menu;
-using AssortedModdingTools.Helpers;
+﻿using AssortedModdingTools.Helpers;
 using AssortedModdingTools.Systems.Reflection;
 using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour.HookGen;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace AssortedModdingTools.Systems.Menu
 {
 	//TODO display somewhere amount of mods loaded
-	public class MenuSystem : SystemBase
+	public partial class MenuSystem : SystemBase
 	{
 		private static int previousMenuMode;
-
-		private delegate void Hook_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
-
-		private delegate void Orig_AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons);
-
-		private static event Hook_AddMenuButtons On_AddMenuButtons
-		{
-			add
-			{
-				HookEndpointManager.Add<Hook_AddMenuButtons>(typeof(Mod).Assembly.GetType("Terraria.ModLoader.UI.Interface").GetMethod("AddMenuButtons", ReflectionHelper.AllFlags), value);
-			}
-			remove
-			{
-				HookEndpointManager.Remove<Hook_AddMenuButtons>(typeof(Mod).Assembly.GetType("Terraria.ModLoader.UI.Interface").GetMethod("AddMenuButtons", ReflectionHelper.AllFlags), value);
-			}
-		}
 
 		public override void Load()
 		{
 			On_AddMenuButtons += Interface_AddMenuButtons;
+			On.Terraria.Main.DrawMenu += Main_DrawMenu;
 			IL.Terraria.Main.DrawMenu += MoveLogoLower;
+		}
+
+		private void Main_DrawMenu(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
+		{
+			HookPreDrawMenu();
+			orig(self, gameTime);
+			//DrawMenu(gameTime);
+			HookPostDrawMenu();
 		}
 
 		public override void OnUpdate()
@@ -52,24 +40,26 @@ namespace AssortedModdingTools.Systems.Menu
 		{
 			On_AddMenuButtons -= Interface_AddMenuButtons;
 			previousMenuMode = -1;
+			createMod = null;
 		}
 
+		//Remove when rewritting menu
 		private static void Interface_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
-			AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuMode.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods
+			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuMode.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods
 
 			if (ModCompileHelper.DeveloperMode)
 			{
-				AddButton(Language.GetTextValue("tModLoader.MenuModSources"), delegate
+				MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModSources"), delegate
 				{
 					bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
-					Main.menuMode = ret ? 10001 : 10022;
+					Main.menuMode = ret ? (int)MenuMode.ModSources : (int)MenuMode.DeveloperModeHelp;
 				}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 
-				AddButton("Modding Tools", MenuMode.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools
+				MenuHelper.AddButton("Modding Tools", MenuMode.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools
 			}
 
-			AddButton(Language.GetTextValue("tModLoader.MenuModBrowser"), MenuMode.ModBrowser, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Browser
+			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModBrowser"), MenuMode.ModBrowser, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Browser
 
 			offY = 220; //Y offset with all buttons. Higher lowers the buttons on screen
 
@@ -79,34 +69,7 @@ namespace AssortedModdingTools.Systems.Menu
 			spacing = 45; //The spacing between each button. Don't touch
 		}
 
-		public static void AddButton(string text, MenuMode menuMode, int selectedMenu, string[] buttonNames, ref int buttonIndex, ref int numButtons)
-		{
-			buttonNames[buttonIndex] = text;
-
-			if (selectedMenu == buttonIndex)
-			{
-				Main.PlaySound(SoundID.MenuOpen);
-				Main.menuMode = (int)menuMode;
-			}
-
-			buttonIndex++;
-			numButtons++;
-		}
-
-		public static void AddButton(string text, Action act, int selectedMenu, string[] buttonNames, ref int buttonIndex, ref int numButtons)
-		{
-			buttonNames[buttonIndex] = text;
-
-			if (selectedMenu == buttonIndex)
-			{
-				Main.PlaySound(SoundID.MenuOpen);
-				act();
-			}
-
-			buttonIndex++;
-			numButtons++;
-		}
-
+		//Remove when rewriting menu
 		private static void MoveLogoLower(ILContext il)
 		{
 			ILCursor c = new ILCursor(il);

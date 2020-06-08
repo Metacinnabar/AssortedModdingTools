@@ -14,6 +14,8 @@ namespace AssortedModdingTools.Systems
 		public static Action HookOnUpdate;
 		public static Action<int> HookOnMenuModeChange;
 		public static Action HookPostSetupContent;
+		public static Action HookPreDrawMenu;
+		public static Action HookPostDrawMenu;
 
 		public virtual void Load() { }
 
@@ -24,6 +26,10 @@ namespace AssortedModdingTools.Systems
 		public virtual void OnMenuModeChange(int previousMenuMode) { }
 
 		public virtual void Unload() { }
+
+		public virtual void PreDrawMenu() { }
+
+		public virtual void PostDrawMenu() { }
 
 		internal SystemBase() { }
 
