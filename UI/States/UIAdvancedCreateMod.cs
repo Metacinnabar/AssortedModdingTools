@@ -9,7 +9,7 @@ using System.CodeDom.Compiler;
 using System.Diagnostics;
 using AssortedModdingTools.UI.Elements;
 using AssortedModdingTools.Extensions;
-using AssortedModdingTools.DataStructures.UI.Menu;
+using AssortedModdingTools.Systems.Menu;
 
 namespace AssortedModdingTools.UI.States
 {
