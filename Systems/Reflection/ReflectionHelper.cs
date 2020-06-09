@@ -1,5 +1,5 @@
-﻿using Terraria;
-using System.Reflection;
+﻿using System.Reflection;
+using Terraria;
 
 namespace AssortedModdingTools.Systems.Reflection
 {

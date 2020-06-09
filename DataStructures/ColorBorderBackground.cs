@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace AssortedModdingTools.DataStructures.UI
+namespace AssortedModdingTools.DataStructures
 {
 	public struct ColorBorderBackground
 	{

@@ -11,6 +11,8 @@ namespace AssortedModdingTools.Systems.Menu
 	//TODO display somewhere amount of mods loaded
 	public partial class MenuSystem : SystemBase
 	{
+		public static MenuMode MenuState => (MenuMode)Main.menuMode;
+
 		private static int previousMenuMode;
 
 		public override void Load()

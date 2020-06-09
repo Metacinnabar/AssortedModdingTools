@@ -1,10 +1,9 @@
-﻿using Terraria;
-using Terraria.UI;
-using Microsoft.Xna.Framework.Graphics;
+﻿using AssortedModdingTools.DataStructures;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.DataStructures;
-using AssortedModdingTools.DataStructures;
-using AssortedModdingTools.DataStructures.UI;
+using Terraria.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {

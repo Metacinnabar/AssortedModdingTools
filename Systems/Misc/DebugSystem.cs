@@ -1,5 +1,4 @@
-﻿using AssortedModdingTools.Systems;
-using Terraria;
+﻿using Terraria;
 
 namespace AssortedModdingTools.Systems.Misc
 {

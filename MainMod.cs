@@ -1,8 +1,7 @@
 using AssortedModdingTools.Extensions;
+using AssortedModdingTools.Helpers;
 using AssortedModdingTools.Systems;
-using AssortedModdingTools.Systems.Menu;
 using AssortedModdingTools.Systems.Misc;
-using AssortedModdingTools.Systems.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,10 +46,7 @@ namespace AssortedModdingTools
 			}
 		}
 
-		private void Main_OnTick()
-		{
-			SystemBase.HookOnUpdate();
-		}
+		private void Main_OnTick() => SystemBase.HookOnUpdate();
 
 		public override void Unload()
 		{
@@ -62,9 +58,6 @@ namespace AssortedModdingTools
 			FPSCounter = null;
 		}
 
-		public override void PostSetupContent()
-		{
-			SystemBase.HookPostSetupContent();
-		}
+		public override void PostSetupContent() => SystemBase.HookPostSetupContent();
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AssortedModdingTools.Extensions
+namespace AssortedModdingTools.Helpers
 {
 	public static class DelegateHelper
 	{

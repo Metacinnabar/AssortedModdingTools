@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Terraria;
-using System;
+using static AssortedModdingTools.Systems.Reflection.ReflectionHelper;
 
 namespace AssortedModdingTools.Systems.Reflection
 {
@@ -15,6 +16,12 @@ namespace AssortedModdingTools.Systems.Reflection
 
 		public static MethodInfo DeveloperModeReady = null;
 
+		public static FieldInfo IsEngineLoaded = null;
+
+		public static FieldInfo OnEngineLoadField = null; //but this is an event?
+
+		public static MethodInfo OnEngineLoad = null; //but this is an event?
+
 		/// <summary>
 		/// This is where you initialize any fields
 		/// </summary>
@@ -23,21 +30,26 @@ namespace AssortedModdingTools.Systems.Reflection
 			try
 			{
 				//This may break with updates as it is reflection.
-				ModCompile = ReflectionHelper.TerrariaAsb.GetType("Terraria.ModLoader.Core.ModCompile");
-				DeveloperMode = ModCompile.GetProperty("DeveloperMode", ReflectionHelper.AllFlags);
-				DeveloperModeReady = ModCompile.GetMethod("DeveloperModeReady", ReflectionHelper.AllFlags);
+				ModCompile = TerrariaAsb.GetType("Terraria.ModLoader.Core.ModCompile");
+				DeveloperMode = ModCompile.GetProperty("DeveloperMode", AllFlags);
+				DeveloperModeReady = ModCompile.GetMethod("DeveloperModeReady", AllFlags);
+				IsEngineLoaded = typeof(Main).GetField("IsEngineLoaded", AllFlags);
+				OnEngineLoadField = typeof(Main).GetField("OnEngineLoad", AllFlags);
+				OnEngineLoad = OnEngineLoadField.GetValue(null).GetType().GetMethod("Invoke");
+
 			}
 			catch (ReflectionTypeLoadException) { }
 		}
 
 		/// <summary>
-		/// This is where you unload any fields by nulling them.
+		/// This is where you unload any fields by nulling them. This is automatically handled
 		/// </summary>
 		public override void Unload()
 		{
-			ModCompile = null;
-			DeveloperMode = null;
-			DeveloperModeReady = null;
+			FieldInfo[] staticFields = typeof(ReflectionSystem).GetFields(BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
+
+			for (int i = 0; i < staticFields.Length; i++)
+				staticFields[i].SetValue(null, null);
 		}
 	}
 }

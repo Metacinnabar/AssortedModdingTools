@@ -1,12 +1,8 @@
-﻿using Terraria.GameContent.UI.Elements;
-using AssortedModdingTools.UI.Elements;
-using System;
-using Terraria.GameInput;
-using Terraria;
-using Microsoft.Xna.Framework.Input;
-using Terraria.UI;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent.UI.Elements;
+using Terraria.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {
@@ -25,13 +21,13 @@ namespace AssortedModdingTools.UI.Elements
 		public override void OnActivate()
 		{
 			base.OnActivate();
-			var panel = new UIPanel();
+			UIPanel panel = new UIPanel();
 			panel.SetPadding(0);
 			panel.Width = Width;
 			panel.Height = Height;
 			panel.Append(this);
 
-			var uiLabel = new UIText(label)
+			UIText uiLabel = new UIText(label)
 			{
 				Left = { Pixels = 10 },
 				Top = { Pixels = 10 }

@@ -1,5 +1,4 @@
-﻿using AssortedModdingTools.DataStructures.Misc;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using System.Collections.Generic;
 using Terraria;
@@ -27,7 +26,9 @@ namespace AssortedModdingTools.Systems.Misc
 
 		private static void Main_OnPostDraw(GameTime gameTime) => frameCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-		private static void Main_DrawFPS(On.Terraria.Main.orig_DrawFPS orig, Main self)
+		private static void Main_DrawFPS(On.Terraria.Main.orig_DrawFPS orig, Main self) => DrawFPS();
+
+		public static void DrawFPS()
 		{
 			string text = $"Avg. FPS: {(int)frameCounter.AverageFramesPerSecond}";
 

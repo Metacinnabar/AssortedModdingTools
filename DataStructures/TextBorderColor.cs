@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 
-namespace AssortedModdingTools.DataStructures.UI
+namespace AssortedModdingTools.DataStructures
 {
 	public readonly struct TextBorderColor : IEquatable<TextBorderColor>
 	{
@@ -22,7 +22,7 @@ namespace AssortedModdingTools.DataStructures.UI
 
 		public override int GetHashCode()
 		{
-			var hashCode = 1200467471;
+			int hashCode = 1200467471;
 			hashCode = hashCode * -1521134295 + textColor.GetHashCode();
 			hashCode = hashCode * -1521134295 + borderColor.GetHashCode();
 			return hashCode;
@@ -30,8 +30,14 @@ namespace AssortedModdingTools.DataStructures.UI
 
 		public override string ToString() => $"{textColor}, {borderColor}";
 
-		public static bool operator ==(TextBorderColor left, TextBorderColor right) => left.Equals(right);
+		public static bool operator ==(TextBorderColor left, TextBorderColor right)
+		{
+			return left.Equals(right);
+		}
 
-		public static bool operator !=(TextBorderColor left, TextBorderColor right) => !(left == right);
+		public static bool operator !=(TextBorderColor left, TextBorderColor right)
+		{
+			return !(left == right);
+		}
 	}
 }

@@ -1,10 +1,10 @@
-﻿using Terraria;
-using System;
-using Terraria.UI;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameInput;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
+using System;
+using Terraria;
+using Terraria.GameInput;
+using Terraria.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {
@@ -39,7 +39,7 @@ namespace AssortedModdingTools.UI.Elements
 		{
 			if (text == null)
 				text = string.Empty;
-			
+
 			if (currentText != text)
 			{
 				currentText = text;
@@ -70,7 +70,7 @@ namespace AssortedModdingTools.UI.Elements
 		{
 			if (Main.inputText.IsKeyDown(key))
 				return !Main.oldInputText.IsKeyDown(key);
-			
+
 			return false;
 		}
 

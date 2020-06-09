@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace AssortedModdingTools.DataStructures.Misc
+namespace AssortedModdingTools.DataStructures
 {
 	public class FrameCounter
 	{

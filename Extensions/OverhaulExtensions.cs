@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AssortedModdingTools.Extensions
 {
@@ -32,7 +29,7 @@ namespace AssortedModdingTools.Extensions
 
 			if (sorted.Contains(item))
 				return;
-			
+
 			throw new Exception("Cyclic dependency found");
 		}
 	}

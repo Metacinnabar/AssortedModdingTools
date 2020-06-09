@@ -1,15 +1,15 @@
-﻿using Terraria;
-using Terraria.Localization;
-using Terraria.ID;
-using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
-using Terraria.ModLoader.UI;
-using System.IO;
+﻿using AssortedModdingTools.Extensions;
+using AssortedModdingTools.Systems.Menu;
+using AssortedModdingTools.UI.Elements;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
-using AssortedModdingTools.UI.Elements;
-using AssortedModdingTools.Extensions;
-using AssortedModdingTools.Systems.Menu;
+using System.IO;
+using Terraria;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace AssortedModdingTools.UI.States
 {
@@ -24,7 +24,7 @@ namespace AssortedModdingTools.UI.States
 
 		public override void OnInitialize()
 		{
-			var uIElement = new UIElement
+			UIElement uIElement = new UIElement
 			{
 				Width = { Percent = 0.8f },
 				MaxWidth = UICommon.MaxPanelWidth,
@@ -34,7 +34,7 @@ namespace AssortedModdingTools.UI.States
 			};
 			Append(uIElement);
 
-			var mainPanel = new UIPanel
+			UIPanel mainPanel = new UIPanel
 			{
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
@@ -43,7 +43,7 @@ namespace AssortedModdingTools.UI.States
 			};
 			uIElement.Append(mainPanel);
 
-			var uITextPanel = new UITextPanel<string>("Advanced Create Mod", 0.8f, true)
+			UITextPanel<string> uITextPanel = new UITextPanel<string>("Advanced Create Mod", 0.8f, true)
 			{
 				HAlign = 0.5f,
 				Top = { Pixels = -45 },
@@ -60,7 +60,7 @@ namespace AssortedModdingTools.UI.States
 			};
 			uIElement.Append(infoTextPanel);
 
-			var buttonBack = new UITextPanel<string>(Language.GetTextValue("UI.Back"))
+			UITextPanel<string> buttonBack = new UITextPanel<string>(Language.GetTextValue("UI.Back"))
 			{
 				Width = { Pixels = -10, Percent = 0.5f },
 				Height = { Pixels = 25 },
@@ -70,7 +70,7 @@ namespace AssortedModdingTools.UI.States
 			buttonBack.OnClick += BackClick;
 			uIElement.Append(buttonBack);
 
-			var buttonCreate = new UITextPanel<string>("Create"); // Create
+			UITextPanel<string> buttonCreate = new UITextPanel<string>("Create"); // Create
 			buttonCreate.CopyStyle(buttonBack);
 			buttonCreate.HAlign = 1f;
 			buttonCreate.WithFadedMouseOver();
@@ -95,7 +95,7 @@ namespace AssortedModdingTools.UI.States
 
 		private static void AddToggle(string text, UIPanel mainPanel, ref float top, int h = 40)
 		{
-			var boolElement = new UITextVisualTogglePanel(text);
+			UITextVisualTogglePanel boolElement = new UITextVisualTogglePanel(text);
 			boolElement.SetPadding(0);
 			boolElement.Width.Set(0, 1f);
 			boolElement.Height.Set(h, 0f);
@@ -107,7 +107,7 @@ namespace AssortedModdingTools.UI.States
 
 		private static UIFocusTextInputPanel AddInput(string text, UIPanel mainPanel, ref float top, bool noSpaces = false, int h = 40)
 		{
-			var boolElement = new UIFocusTextInputPanel(text);
+			UIFocusTextInputPanel boolElement = new UIFocusTextInputPanel(text);
 			boolElement.SetPadding(0);
 			boolElement.Width.Set(0, 1f);
 			boolElement.Height.Set(h, 0f);
@@ -198,10 +198,7 @@ namespace AssortedModdingTools.UI.States
 
 		private string GetModDescription() => $"{displayNamePanel.currentText}...\n\nVersion Changelog:\n\n- Initial Release (v1.0)";
 
-		private string GetModClass(string modNameTrimmed)
-		{
-			return
-$@"using Terraria.ModLoader;
+		private string GetModClass(string modNameTrimmed) => $@"using Terraria.ModLoader;
 
 namespace {modNameTrimmed}
 {{
@@ -209,12 +206,8 @@ namespace {modNameTrimmed}
 	{{
 	}}
 }}";
-		}
 
-		internal string GetModCsproj(string modNameTrimmed)
-		{
-			return
-$@"<?xml version=""1.0"" encoding=""utf-8""?>
+		internal string GetModCsproj(string modNameTrimmed) => $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
   <Import Project=""..\..\references\tModLoader.targets"" />
   <PropertyGroup>
@@ -230,7 +223,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
   </ItemGroup>
 </Project>";
-		}
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
@@ -246,10 +238,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 			return false;
 		}
 
-		internal string GetLaunchSettings()
-		{
-			return
-$@"{{
+		internal string GetLaunchSettings() => $@"{{
   ""profiles"": {{
     ""Terraria"": {{
       ""commandName"": ""Executable"",
@@ -263,7 +252,6 @@ $@"{{
     }}
   }}
 }}";
-		}
 		#endregion Files
 	}
 }

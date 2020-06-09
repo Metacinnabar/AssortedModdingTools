@@ -6,7 +6,6 @@ using Terraria;
 
 namespace AssortedModdingTools.Helpers
 {
-	// TODO test
 	public static class ModCompileHelper
 	{
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
