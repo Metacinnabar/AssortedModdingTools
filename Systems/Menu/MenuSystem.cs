@@ -1,37 +1,55 @@
 ﻿using AssortedModdingTools.Helpers;
 using AssortedModdingTools.Systems.Reflection;
+using AssortedModdingTools.UI.States.Menu;
 using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
 using Terraria;
 using Terraria.Localization;
+using Terraria.UI;
 
 namespace AssortedModdingTools.Systems.Menu
 {
 	//TODO display somewhere amount of mods loaded
 	public partial class MenuSystem : SystemBase
 	{
-		public static MenuMode MenuState => (MenuMode)Main.menuMode;
+		public static MenuModes MenuState => (MenuModes)Main.menuMode;
 
 		private static int previousMenuMode;
 
 		public override void Load()
 		{
-			On_AddMenuButtons += Interface_AddMenuButtons;
-			On.Terraria.Main.DrawMenu += Main_DrawMenu;
-			IL.Terraria.Main.DrawMenu += MoveLogoLower;
+			if (Main.dedServ) //idk?
+			{
+				MenuInterface = new UserInterface();
+				LanguageSettings = new UILanguageSettings();
+
+				On_AddMenuButtons += Interface_AddMenuButtons;
+				On.Terraria.Main.DrawMenu += Main_DrawMenu;
+				IL.Terraria.Main.DrawMenu += MoveLogoLower;
+			}
 		}
 
 		private void Main_DrawMenu(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			HookPreDrawMenu();
-			orig(self, gameTime);
-			//DrawMenu(gameTime);
+
+			MenuInterface.Draw(Main.spriteBatch, gameTime);
+
+			try
+			{
+				orig(self, gameTime);
+			}
+			catch (Exception) { }
+
 			HookPostDrawMenu();
 		}
 
 		public override void OnUpdate()
 		{
+			MenuInterface.Update(Main._drawInterfaceGameTime);
+
 			if (previousMenuMode != Main.menuMode)
 				HookOnMenuModeChange(previousMenuMode);
 
@@ -48,20 +66,20 @@ namespace AssortedModdingTools.Systems.Menu
 		//Remove when rewritting menu
 		private static void Interface_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
-			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuMode.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods
+			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuModes.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods
 
 			if (ModCompileHelper.DeveloperMode)
 			{
 				MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModSources"), delegate
 				{
 					bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
-					Main.menuMode = ret ? (int)MenuMode.ModSources : (int)MenuMode.DeveloperModeHelp;
+					Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
 				}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 
-				MenuHelper.AddButton("Modding Tools", MenuMode.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools
+				MenuHelper.AddButton("Modding Tools", MenuModes.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools
 			}
 
-			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModBrowser"), MenuMode.ModBrowser, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Browser
+			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModBrowser"), MenuModes.ModBrowser, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Browser
 
 			offY = 220; //Y offset with all buttons. Higher lowers the buttons on screen
 

@@ -143,7 +143,7 @@ namespace AssortedModdingTools.UI.States
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(SoundID.MenuClose);
-			Main.menuMode = (int)MenuMode.Main;
+			Main.menuMode = (int)MenuModes.Main;
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)

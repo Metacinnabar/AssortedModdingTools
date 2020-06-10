@@ -9,7 +9,7 @@ namespace AssortedModdingTools.Systems.Menu
 
 		public override void PreDrawMenu()
 		{
-			if (Main.menuMode == (int)MenuMode.ModdingTools)
+			if (Main.menuMode == (int)MenuModes.ModdingTools)
 				DrawModdingToolsMenu();
 		}
 

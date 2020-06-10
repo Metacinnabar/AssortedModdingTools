@@ -1,7 +1,9 @@
 ﻿using AssortedModdingTools.Helpers;
 using AssortedModdingTools.Systems.Misc;
+using AssortedModdingTools.UI.States.Menu;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.UI;
 using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 using static AssortedModdingTools.Systems.Reflection.ReflectionSystem;
@@ -10,24 +12,30 @@ namespace AssortedModdingTools.Systems.Menu
 {
 	public partial class MenuSystem
 	{
+		public static UserInterface MenuInterface { get; protected set; }
+
+		public static UILanguageSettings LanguageSettings;
+		public static UISettings Settings;
+
 		public static void DrawMenu(GameTime gameTime)
 		{
 			//float uiScaleWanted = Main._uiScaleWanted;
 			//Main.UIScale = 1f;
 			//Main._uiScaleWanted = uiScaleWanted;
 
-			if (!(bool)IsEngineLoaded.GetValue(null))
-			{
-				IsEngineLoaded.SetValue(null, true);
-				EventHelper.InvokeEvent(Main.instance, nameof(Main.OnEngineLoad));
-			}
+			//if (!(bool)IsEngineLoaded.GetValue(null))
+			//{
+			//	  IsEngineLoaded.SetValue(null, true);
+			//	  EventHelper.InvokeEvent(Main.instance, nameof(Main.OnEngineLoad));
+			//}
 
 			GamepadMainMenuHandler.Update();
 			GamepadMainMenuHandler.MenuItemPositions.Clear();
 
 			//int num = Main.menuMode;
 
-			if (MenuState <= MenuMode.PlayerSelection && Main.slimeRain)
+			//if (MenuState <= MenuMode.PlayerSelection && Main.slimeRain)
+			if (Main.slimeRain)
 				Main.StopSlimeRain();
 
 			Main.render = false;
@@ -36,7 +44,7 @@ namespace AssortedModdingTools.Systems.Menu
 			Cloud.UpdateClouds();
 			BiomeHelper.ResetTiles();
 
-			Main.drawingPlayerChat = false;
+			Main.drawingPlayerChat = false; //i wonder what would happen if this was set to true
 
 			for (int i = 0; i < Main.numChatLines; i++)
 			{
@@ -55,6 +63,7 @@ namespace AssortedModdingTools.Systems.Menu
 
 			Main.background = 0;
 
+			/* skiped logo ahh
 			byte b = (byte)((255 + Main.tileColor.R * 2) / 3);
 			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(b, b, b, 255);
 
@@ -86,7 +95,9 @@ namespace AssortedModdingTools.Systems.Menu
 					Main.LogoA = 0;
 					Main.LogoT = true;
 				}
-			}
+			}*/
+
+
 		}
 	}
 }

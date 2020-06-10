@@ -6,7 +6,7 @@ namespace AssortedModdingTools.Systems.Menu
 {
 	public static class MenuHelper
 	{
-		public static void AddButton(string text, MenuMode menuMode, int selectedMenu, string[] buttonNames, ref int buttonIndex, ref int numButtons)
+		public static void AddButton(string text, MenuModes menuMode, int selectedMenu, string[] buttonNames, ref int buttonIndex, ref int numButtons)
 		{
 			buttonNames[buttonIndex] = text;
 

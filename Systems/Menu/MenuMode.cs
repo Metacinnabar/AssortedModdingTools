@@ -1,6 +1,6 @@
 ﻿namespace AssortedModdingTools.Systems.Menu
 {
-	public enum MenuMode
+	public enum MenuModes
 	{
 		None = -1,
 		Main = 0,
