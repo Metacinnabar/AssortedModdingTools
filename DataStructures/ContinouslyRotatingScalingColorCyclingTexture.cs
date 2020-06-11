@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria;
 
 namespace AssortedModdingTools.DataStructures
 {
-	public struct ContinouslyRotatingScalingTexture : IEquatable<ContinouslyRotatingScalingTexture>
+	//todo fix
+	public struct ContinouslyRotatingScalingColorCyclingTexture
 	{
 		public float Rotation { get; private set; }
 		public Direction RotationDirection { get; private set; }
@@ -21,8 +20,9 @@ namespace AssortedModdingTools.DataStructures
 		public FloatBounds rotationSpeedBounds;
 		public FloatBounds rotationBounds;
 		public float rotationSpeed;
+		public Color[] colorsToCycle;
 
-		public ContinouslyRotatingScalingTexture(Texture2D texture, float rotationSpeed = 1f, float scaleSpeed = 1f, FloatBounds? scaleSpeedBounds = null, FloatBounds? rotationSpeedBounds = null, FloatBounds? scaleBounds = null, FloatBounds? rotationBounds = null) : this()
+		public ContinouslyRotatingScalingColorCyclingTexture(Texture2D texture, float rotationSpeed = 1f, float scaleSpeed = 1f, FloatBounds? scaleSpeedBounds = null, FloatBounds? rotationSpeedBounds = null, FloatBounds? scaleBounds = null, FloatBounds? rotationBounds = null) : this()
 		{
 			this.texture = texture;
 			this.scaleSpeedBounds = scaleSpeedBounds ?? new FloatBounds(-20f, 20f);
@@ -39,7 +39,7 @@ namespace AssortedModdingTools.DataStructures
 			rotationSpeedBuffer = 3E-05f;
 		}
 
-		public void Draw(Vector2 position, float extraScale = 1f, Color? color = null, Rectangle frame = default, SpriteEffects? spriteEffects = null, float layerDepth = 0)
+		public void Draw(Vector2 position, float extraScale = 1f, float? alpha = null, Rectangle frame = default, SpriteEffects? spriteEffects = null, float layerDepth = 0)
 		{
 			if (texture == null)
 				return;
@@ -76,47 +76,6 @@ namespace AssortedModdingTools.DataStructures
 				scaleSpeed += 1f;
 			else if (scaleSpeed > scaleSpeedBounds.Min && ScaleDirection == Direction.Down)
 				scaleSpeed -= 1f;
-		}
-
-		public override bool Equals(object obj) => obj is ContinouslyRotatingScalingTexture texture && Equals(texture);
-
-		public bool Equals(ContinouslyRotatingScalingTexture other) => Rotation == other.Rotation &&
-				   RotationDirection == other.RotationDirection &&
-				   Scale == other.Scale &&
-				   ScaleDirection == other.ScaleDirection &&
-				   EqualityComparer<Texture2D>.Default.Equals(texture, other.texture) &&
-				   scaleSpeedBounds.Equals(other.scaleSpeedBounds) &&
-				   scaleBounds.Equals(other.scaleBounds) &&
-				   scaleSpeed == other.scaleSpeed &&
-				   rotationSpeedBounds.Equals(other.rotationSpeedBounds) &&
-				   rotationBounds.Equals(other.rotationBounds) &&
-				   rotationSpeed == other.rotationSpeed;
-
-		public override int GetHashCode()
-		{
-			int hashCode = -438475418;
-			hashCode = hashCode * -1521134295 + Rotation.GetHashCode();
-			hashCode = hashCode * -1521134295 + RotationDirection.GetHashCode();
-			hashCode = hashCode * -1521134295 + Scale.GetHashCode();
-			hashCode = hashCode * -1521134295 + ScaleDirection.GetHashCode();
-			hashCode = hashCode * -1521134295 + EqualityComparer<Texture2D>.Default.GetHashCode(texture);
-			hashCode = hashCode * -1521134295 + scaleSpeedBounds.GetHashCode();
-			hashCode = hashCode * -1521134295 + scaleBounds.GetHashCode();
-			hashCode = hashCode * -1521134295 + scaleSpeed.GetHashCode();
-			hashCode = hashCode * -1521134295 + rotationSpeedBounds.GetHashCode();
-			hashCode = hashCode * -1521134295 + rotationBounds.GetHashCode();
-			hashCode = hashCode * -1521134295 + rotationSpeed.GetHashCode();
-			return hashCode;
-		}
-
-		public static bool operator ==(ContinouslyRotatingScalingTexture left, ContinouslyRotatingScalingTexture right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(ContinouslyRotatingScalingTexture left, ContinouslyRotatingScalingTexture right)
-		{
-			return !(left == right);
 		}
 	}
 }
