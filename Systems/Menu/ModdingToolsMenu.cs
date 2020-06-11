@@ -15,7 +15,7 @@ namespace AssortedModdingTools.Systems.Menu
 
 		private void DrawModdingToolsMenu()
 		{
-			Main.MenuUI.SetState(createMod);
+			MenuSystem.MenuInterface.SetState(createMod);
 			Main.menuMode = 888;
 		}
 

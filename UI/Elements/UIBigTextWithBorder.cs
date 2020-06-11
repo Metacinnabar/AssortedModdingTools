@@ -1,6 +1,7 @@
 ﻿using AssortedModdingTools.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.UI;
@@ -21,16 +22,23 @@ namespace AssortedModdingTools.UI.Elements
 		{
 			this.text = text;
 			this.textBorderColor = textBorderColor ?? TextBorderColors.WhiteBlack;
-			this.origin = origin ?? Vector2.Zero;
+			Vector2 size = Main.fontDeathText.MeasureString(text);
+			this.origin = origin ?? size / 2f;
 			this.scale = scale;
+			Width.Set(size.X, 0f);
+			Height.Set(size.Y, 0f);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			CalculatedStyle dimensions = GetDimensions();
 			Point16 pos = new Point16((short)dimensions.X, (short)dimensions.Y);
+			byte b = (byte)((255 + Main.tileColor.R * 2) / 3); //wat
+			Color color = new Color(b, b, b);
 
-			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, textBorderColor.textColor, textBorderColor.borderColor, origin, scale);
+			color = new Color((color.R + Color.White.R) / 2, (color.G + Color.White.G) / 2, (color.B + Color.White.B) / 2);
+
+			Main.spriteBatch.DrawString(Main.fontDeathText, text, new Vector2(pos.X, pos.Y), color, 0f, origin, scale, SpriteEffects.None, default);
 		}
 	}
 }
