@@ -5,6 +5,7 @@ using Terraria.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {
+	//todo hovering lol
 	public class UIHoverBigTextWithBorder : UIBigTextWithBorder
 	{
 		public UIHoverBigTextWithBorder(string text, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float scale = 1f) 
