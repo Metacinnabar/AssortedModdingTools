@@ -18,9 +18,11 @@ namespace AssortedModdingTools.Systems.Menu
 
 		private static int previousMenuMode;
 
+		private static GameTime lastUpdateUIGameTime;
+
 		public override void Load()
 		{
-			if (Main.dedServ) //idk?
+			if (!Main.dedServ) //idk?
 			{
 				MenuInterface = new UserInterface();
 				LanguageSettings = new UILanguageSettings();
@@ -35,7 +37,8 @@ namespace AssortedModdingTools.Systems.Menu
 		{
 			HookPreDrawMenu();
 
-			MenuInterface.Draw(Main.spriteBatch, gameTime);
+			if (MenuInterface?.CurrentState != null && lastUpdateUIGameTime != null)
+				MenuInterface.Draw(Main.spriteBatch, lastUpdateUIGameTime);
 
 			try
 			{
@@ -46,14 +49,21 @@ namespace AssortedModdingTools.Systems.Menu
 			HookPostDrawMenu();
 		}
 
-		public override void OnUpdate()
+		public override void OnUpdate(GameTime gameTime)
 		{
-			MenuInterface.Update(Main._drawInterfaceGameTime);
+			if (Main.gameMenu)
+			{
+				if (previousMenuMode != Main.menuMode)
+					HookOnMenuModeChange(previousMenuMode);
 
-			if (previousMenuMode != Main.menuMode)
-				HookOnMenuModeChange(previousMenuMode);
 
-			previousMenuMode = Main.menuMode;
+				lastUpdateUIGameTime = gameTime;
+
+				if (MenuInterface?.CurrentState != null)
+					MenuInterface.Update(gameTime);
+
+				previousMenuMode = Main.menuMode;
+			}
 		}
 
 		public override void Unload()
@@ -70,10 +80,11 @@ namespace AssortedModdingTools.Systems.Menu
 
 			if (ModCompileHelper.DeveloperMode)
 			{
-				MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModSources"), delegate
+				MenuHelper.AddButton("haha test menu use for tests hahaha", delegate //Language.GetTextValue("tModLoader.MenuModSources")
 				{
-					bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
-					Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
+					//bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
+					//Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
+					MenuInterface.SetState(LanguageSettings);
 				}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 
 				MenuHelper.AddButton("Modding Tools", MenuModes.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools
