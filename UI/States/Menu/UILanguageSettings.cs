@@ -1,4 +1,7 @@
-﻿using AssortedModdingTools.Systems.Menu;
+﻿using AssortedModdingTools.DataStructures;
+using AssortedModdingTools.Systems.Menu;
+using AssortedModdingTools.UI.Elements;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,6 +17,11 @@ namespace AssortedModdingTools.UI.States.Menu
 	public class UILanguageSettings : UIState, IMenuState
 	{
 		public MenuModes MenuMode => MenuModes.LanguageSettings;
+
+		public override void OnInitialize()
+		{
+			UIMenuButton english = new UIMenuButton(Language.GetTextValue("Language.English"), )
+		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
@@ -63,5 +71,33 @@ namespace AssortedModdingTools.UI.States.Menu
 	public class UISettings : UIState, IMenuState
 	{
 		public MenuModes MenuMode => MenuModes.Settings;
+	}
+
+	//todo: hovering
+	public class UIMenuStateMoveButton : UIBigTextWithBorder
+	{
+		public readonly UIState moveState;
+
+		public UIMenuStateMoveButton(string text, UIState state, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 1f) : base(text, textBorderColor, origin, scale)
+		{
+			moveState = state;
+		}
+
+		public override void Click(UIMouseEvent evt)
+		{
+			base.Click(evt);
+			MenuSystem.MenuInterface.SetState(moveState);
+		}
+	}
+
+	public class UIHoverBigTextWithBorder : UIBigTextWithBorder
+	{
+		public UIHoverBigTextWithBorder(string text, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 1f) : base(text, textBorderColor, origin, scale) { }
+
+		public override void MouseOver(UIMouseEvent evt)
+		{
+			base.MouseOver(evt);
+
+		}
 	}
 }

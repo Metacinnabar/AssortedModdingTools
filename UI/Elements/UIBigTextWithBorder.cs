@@ -11,16 +11,16 @@ namespace AssortedModdingTools.UI.Elements
 	{
 		public string text = string.Empty;
 
-		public TextBorderColor textBorderColor = TextBorderColor.WhiteBlack;
+		public TextBorderColors textBorderColor = TextBorderColors.WhiteBlack;
 
 		public Vector2 origin = Vector2.Zero;
 
 		public float scale = 1f;
 
-		public UIBigTextWithBorder(string text, TextBorderColor? textBorderColor = null, Vector2? origin = null, float scale = 1f)
+		public UIBigTextWithBorder(string text, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 1f)
 		{
 			this.text = text;
-			this.textBorderColor = textBorderColor ?? TextBorderColor.WhiteBlack;
+			this.textBorderColor = textBorderColor ?? TextBorderColors.WhiteBlack;
 			this.origin = origin ?? Vector2.Zero;
 			this.scale = scale;
 		}
