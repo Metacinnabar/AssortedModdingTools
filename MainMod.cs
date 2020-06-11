@@ -28,7 +28,13 @@ namespace AssortedModdingTools
 			FPSCounter.Load();
 
 			//Events
-			Main.OnTick += Main_OnTick;
+			On.Terraria.Main.Update += Main_Update; ;
+		}
+
+		private void Main_Update(On.Terraria.Main.orig_Update orig, Main self, Microsoft.Xna.Framework.GameTime gameTime)
+		{
+			orig(self, gameTime);
+			SystemBase.HookOnUpdate(gameTime);
 		}
 
 		private static void InitializeSystems()
@@ -43,10 +49,10 @@ namespace AssortedModdingTools
 				DelegateHelper.AddToDelegate(ref SystemBase.HookUnload, system.Unload);
 				DelegateHelper.AddToDelegate(ref SystemBase.HookOnUpdate, system.OnUpdate);
 				DelegateHelper.AddToDelegate(ref SystemBase.HookOnMenuModeChange, system.OnMenuModeChange);
+				DelegateHelper.AddToDelegate(ref SystemBase.HookPreDrawMenu, system.PreDrawMenu);
+				DelegateHelper.AddToDelegate(ref SystemBase.HookPostDrawMenu, system.PostDrawMenu);
 			}
 		}
-
-		private void Main_OnTick() => SystemBase.HookOnUpdate();
 
 		public override void Unload()
 		{

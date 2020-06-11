@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
-using System;
-using System.Data.SqlTypes;
-using Terraria;
 
 namespace AssortedModdingTools.DataStructures
 {
 	public readonly struct TextBorderHoverColors
 	{
-		public static readonly TextBorderHoverColors WhiteBlackYellow = new TextBorderHoverColors(Color.White, Color.Black, Color.Goldenrod); //or Color.Gold
+		public static readonly TextBorderHoverColors WhiteBlackYellow = new TextBorderHoverColors(Color.Gray, Color.Black, Color.Goldenrod); //or Color.Gold
 
 		public readonly Color textColor;
 		public readonly Color borderColor;

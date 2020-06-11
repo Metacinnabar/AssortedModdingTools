@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AssortedModdingTools.DataStructures;
+using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using System.Collections.Generic;
 using Terraria;

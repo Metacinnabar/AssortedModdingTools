@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace AssortedModdingTools.Systems
 {
@@ -6,7 +7,7 @@ namespace AssortedModdingTools.Systems
 	{
 		public static Action HookLoad;
 		public static Action HookUnload;
-		public static Action HookOnUpdate;
+		public static Action<GameTime> HookOnUpdate;
 		public static Action<int> HookOnMenuModeChange;
 		public static Action HookPostSetupContent;
 		public static Action HookPreDrawMenu;
@@ -14,7 +15,7 @@ namespace AssortedModdingTools.Systems
 
 		public virtual void Load() { }
 
-		public virtual void OnUpdate() { }
+		public virtual void OnUpdate(GameTime gameTime) { }
 
 		public virtual void PostSetupContent() { }
 
