@@ -46,7 +46,8 @@ namespace AssortedModdingTools.DataStructures
 
 			Rectangle? sourceRect = frame == default ? null : new Rectangle?(frame);
 			SpriteEffects effects = spriteEffects == null ? SpriteEffects.None : (SpriteEffects)spriteEffects;
-			Color nonNullableColor = color == null ? Color.White : (Color)color;
+			//Color nonNullableColor = color == null ? Color.White : (Color)color;
+			Color nonNullableColor = Color.White; //todo: fix h
 
 			Main.spriteBatch.Draw(texture, position, sourceRect, nonNullableColor, Rotation, new Vector2(texture.Width / 2, texture.Height / 2), Scale * extraScale, effects, layerDepth);
 		}
