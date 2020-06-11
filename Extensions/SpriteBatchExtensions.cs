@@ -18,20 +18,13 @@ namespace AssortedModdingTools.Extensions
 			{
 				Vector2 at = CalcHelper.AngleToVector(i * 1.57079637f / resolution, radius);
 				Vector2 atP = at.Perpendicular();
-				spriteBatch.DrawLine(position + last, position + at, color);
-				spriteBatch.DrawLine(position - last, position - at, color);
-				spriteBatch.DrawLine(position + lastP, position + atP, color);
-				spriteBatch.DrawLine(position - lastP, position - atP, color);
+				Utils.DrawLine(spriteBatch, position + last, position + at, color);
+				Utils.DrawLine(spriteBatch, position - last, position - at, color);
+				Utils.DrawLine(spriteBatch, position + lastP, position + atP, color);
+				Utils.DrawLine(spriteBatch, position - lastP, position - atP, color);
 				last = at;
 				lastP = atP;
 			}
-		}
-
-		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color) => spriteBatch.DrawLineAngle(start, start.Angle(end), Vector2.Distance(start, end), color);
-
-		public static void DrawLineAngle(this SpriteBatch spriteBatch, Vector2 start, float angle, float length, Color color)
-		{
-			spriteBatch.Draw(Main.magicPixel, start, new Rectangle(0, 0, 1, 1), color, angle, Vector2.Zero, new Vector2(length, 1f), SpriteEffects.None, 0f);
 		}
 	}
 }
