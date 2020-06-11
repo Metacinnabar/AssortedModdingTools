@@ -1,7 +1,4 @@
-﻿using AssortedModdingTools.DataStructures;
-using AssortedModdingTools.Systems.Menu;
-using AssortedModdingTools.UI.Elements;
-using Microsoft.Xna.Framework;
+﻿using AssortedModdingTools.Systems.Menu;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,13 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Localization;
-using Terraria.UI;
 
 namespace AssortedModdingTools.UI.States.Menu
 {
-	public class UILanguageSettings : UIState, IMenuState
+	public class UILanguageSettings : MenuState
 	{
-		public MenuModes MenuMode => MenuModes.LanguageSettings;
+		public override MenuModes MenuMode => MenuModes.LanguageSettings;
 
 		public override void OnInitialize()
 		{
@@ -65,39 +61,6 @@ namespace AssortedModdingTools.UI.States.Menu
 			}
 			array7[0] = 0.85f;
 			array7[10] = 0.95f;
-		}
-	}
-
-	public class UISettings : UIState, IMenuState
-	{
-		public MenuModes MenuMode => MenuModes.Settings;
-	}
-
-	//todo: hovering
-	public class UIMenuStateMoveButton : UIBigTextWithBorder
-	{
-		public readonly UIState moveState;
-
-		public UIMenuStateMoveButton(string text, UIState state, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 1f) : base(text, textBorderColor, origin, scale)
-		{
-			moveState = state;
-		}
-
-		public override void Click(UIMouseEvent evt)
-		{
-			base.Click(evt);
-			MenuSystem.MenuInterface.SetState(moveState);
-		}
-	}
-
-	public class UIHoverBigTextWithBorder : UIBigTextWithBorder
-	{
-		public UIHoverBigTextWithBorder(string text, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 1f) : base(text, textBorderColor, origin, scale) { }
-
-		public override void MouseOver(UIMouseEvent evt)
-		{
-			base.MouseOver(evt);
-
 		}
 	}
 }

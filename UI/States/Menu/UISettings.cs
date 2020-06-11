@@ -2,8 +2,8 @@
 
 namespace AssortedModdingTools.UI.States.Menu
 {
-	public interface IMenuState
+	public class UISettings : MenuState
 	{
-		MenuModes MenuMode { get; }
+		public override MenuModes MenuMode => MenuModes.Settings;
 	}
 }

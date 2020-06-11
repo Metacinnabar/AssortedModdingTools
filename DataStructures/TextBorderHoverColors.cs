@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
+using System;
+using System.Data.SqlTypes;
 using Terraria;
 
 namespace AssortedModdingTools.DataStructures
@@ -18,5 +20,7 @@ namespace AssortedModdingTools.DataStructures
 			this.borderColor = borderColor;
 			this.hoverColor = hoverColor;
 		}
+
+		public TextBorderColors TextBorderColors => new TextBorderColors(textColor, borderColor);
 	}
 }
