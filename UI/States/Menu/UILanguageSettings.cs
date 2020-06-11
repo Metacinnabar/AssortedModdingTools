@@ -1,11 +1,8 @@
-﻿using AssortedModdingTools.Systems.Menu;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AssortedModdingTools.DataStructures;
+using AssortedModdingTools.Systems.Menu;
+using AssortedModdingTools.UI.Elements;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace AssortedModdingTools.UI.States.Menu
@@ -16,51 +13,88 @@ namespace AssortedModdingTools.UI.States.Menu
 
 		public override void OnInitialize()
 		{
-			UIMenuButton english = new UIMenuButton(Language.GetTextValue("Language.English"), )
-		}
+			int y = 200;
+			int spacing = 33;
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			base.Draw(spriteBatch);
+			UIBigTextWithBorder header = new UIBigTextWithBorder(Language.GetTextValue("LegacyMenu.102"), TextBorderColors.WhiteBlack, null, 0.85f); //Select language
+			header.Top.Set(y - 20, 0f);
+			header.HAlign = 0.5f;
+			Append(header); //idk how append works
 
-			array9[0] = Lang.menu[102].Value;
-			array[0] = true;
-			array9[1] = Language.GetTextValue("Language.English");
-			array9[2] = Language.GetTextValue("Language.German");
-			array9[3] = Language.GetTextValue("Language.Italian");
-			array9[4] = Language.GetTextValue("Language.French");
-			array9[5] = Language.GetTextValue("Language.Spanish");
-			array9[6] = Language.GetTextValue("Language.Russian");
-			array9[7] = Language.GetTextValue("Language.Chinese");
-			array9[8] = Language.GetTextValue("Language.Portuguese");
-			array9[9] = Language.GetTextValue("Language.Polish");
-			array9[10] = Lang.menu[5].Value;
-			num5 = 11;
-			if ()
+			y += spacing;
+
+			UISetLanguageButton english = new UISetLanguageButton(Language.GetTextValue("Language.English"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			english.Top.Set(y, 0f);
+			english.HAlign = 0.5f;
+			Append(english); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton german = new UISetLanguageButton(Language.GetTextValue("Language.German"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			german.Top.Set(y, 0f);
+			german.HAlign = 0.5f;
+			Append(german); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton italian = new UISetLanguageButton(Language.GetTextValue("Language.Italian"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			italian.Top.Set(y, 0f);
+			italian.HAlign = 0.5f;
+			Append(italian); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton french = new UISetLanguageButton(Language.GetTextValue("Language.French"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			french.Top.Set(y, 0f);
+			french.HAlign = 0.5f;
+			Append(french); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton spanish = new UISetLanguageButton(Language.GetTextValue("Language.Spanish"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			spanish.Top.Set(y, 0f);
+			spanish.HAlign = 0.5f;
+			Append(spanish); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton russian = new UISetLanguageButton(Language.GetTextValue("Language.Russian"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			russian.Top.Set(y, 0f);
+			russian.HAlign = 0.5f;
+			Append(russian); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton chinese = new UISetLanguageButton(Language.GetTextValue("Language.Chinese"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			chinese.Top.Set(y, 0f);
+			chinese.HAlign = 0.5f;
+			Append(chinese); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton portuguese = new UISetLanguageButton(Language.GetTextValue("Language.Portuguese"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			portuguese.Top.Set(y, 0f);
+			portuguese.HAlign = 0.5f;
+			Append(portuguese); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UISetLanguageButton polish = new UISetLanguageButton(Language.GetTextValue("Language.Polish"), GameCulture.English, TextBorderHoverColors.WhiteBlackYellow, null, 0.75f);
+			polish.Top.Set(y, 0f);
+			polish.HAlign = 0.5f;
+			Append(polish); //is this correct? is it english.Append(this);?
+
+			y += spacing;
+
+			UIBigTextWithBorder back = new UIBigTextWithBorder(Language.GetTextValue("LegacyMenu.5"), TextBorderColors.WhiteBlack, null, 0.95f); //Back
+			header.Top.Set(y + 10, 0f);
+			header.HAlign = 0.5f;
+			header.OnClick += (evt, listeningElement) =>
 			{
 				MenuSystem.MenuInterface.SetState(MenuSystem.Settings); //Main.menuMode = MenuModes.Settings;
-				Main.PlaySound(11, -1, -1, 1, 1f, 0f);
-			}
-
-
-			else if (this.selectedMenu >= 1)
-			{
-				Main.chTitle = true;
-				GameCulture gameCulture = GameCulture.
-				LanguageManager.Instance.SetLanguage(this.selectedMenu);
-				Main.PlaySound(12, -1, -1, 1, 1f, 0f);
-				Main.SaveSettings();
-			}
-			num4 = 33;
-			num2 = 200;
-			array4[0] = -20;
-			array4[10] = 10;
-			for (int l = 0; l < num5; l++)
-			{
-				array7[l] = 0.75f;
-			}
-			array7[0] = 0.85f;
-			array7[10] = 0.95f;
+				Main.PlaySound(SoundID.MenuClose);
+			};
+			Append(header); //idk how append works
 		}
 	}
 }
