@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AssortedModdingTools.DataStructures;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics;
 using Terraria.UI;

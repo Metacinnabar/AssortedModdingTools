@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.UI;
 
-namespace Dinosaur.ModUI
+namespace AssortedModdingTools.UI.Elements
 {
 	public class UIDragableTexturedPanel : UITexturedPanel
 	{

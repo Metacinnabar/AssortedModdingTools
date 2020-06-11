@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.UI;
 
-namespace Dinosaur.ModUI
+namespace AssortedModdingTools.UI.Elements
 {
 	public class UITexturedPanel : UIElement
 	{

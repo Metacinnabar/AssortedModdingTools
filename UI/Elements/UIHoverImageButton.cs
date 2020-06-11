@@ -2,7 +2,7 @@
 using System;
 using Terraria.GameContent.UI.Elements;
 
-namespace Dinosaur.ModUI
+namespace AssortedModdingTools.UI.Elements
 {
 	public class UIHoverImageButton : UIImageButton
 	{

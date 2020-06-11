@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
-namespace Dinosaur.ModUI
+namespace AssortedModdingTools.UI.Elements
 {
 	public class UIItemSlot : UIElement
 	{
