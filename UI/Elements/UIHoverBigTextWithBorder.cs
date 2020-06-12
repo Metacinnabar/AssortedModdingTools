@@ -7,15 +7,18 @@ using Terraria.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {
-	//todo hovering lol
 	public class UIHoverBigTextWithBorder : UIBigTextWithBorder
 	{
 		public float minScale, maxScale;
+
+		public TextBorderHoverColors textBorderHoverColors;
+
 		public UIHoverBigTextWithBorder(string text, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float maxscale = 1f)
 			: base(text, textBorderHoverColors.Value.TextBorderColors, origin, maxscale)
 		{
 			minScale = maxscale - 0.2f;
 			maxScale = maxscale;
+			this.textBorderHoverColors = textBorderHoverColors ?? TextBorderHoverColors.DefaultHover;
 		}
 
 		//disregard the other draw and replace
@@ -23,15 +26,16 @@ namespace AssortedModdingTools.UI.Elements
 		{
 			CalculatedStyle dimensions = GetDimensions();
 			Point16 pos = new Point16((short)dimensions.X, (short)dimensions.Y);
-			byte b = (byte)((255 + Main.tileColor.R * 2) / 3); //wat
-			Color color = new Color(b, b, b);
-
-			color = new Color((color.R + 35) / 2, (color.G + 35) / 2, (color.B + 35) / 2);
+			Color color = textBorderHoverColors.textColor;
+			Color borderColor = textBorderHoverColors.borderColor;
 
 			if (IsMouseHovering)
-				color = Color.Gold;
+			{
+				color = textBorderHoverColors.textHoverColor;
+				borderColor = textBorderHoverColors.borderHoverColor;
+			}
 
-			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, color, textBorderColor.borderColor, origin, scale);
+			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, color, borderColor, origin, scale);
 		}
 
 		public override void Update(GameTime gameTime)
@@ -41,13 +45,13 @@ namespace AssortedModdingTools.UI.Elements
 			if (IsMouseHovering)
 			{
 				if (scale < maxScale)
-					scale += 0.02f;
+					scale += 0.015f;
 
 				if (scale > maxScale)
 					scale = maxScale;
 			}
 			else if (scale > minScale)
-				scale -= 0.02f;
+				scale -= 0.015f;
 		}
 	}
 }

@@ -56,7 +56,6 @@ namespace AssortedModdingTools.Systems.Menu
 				if (previousMenuMode != Main.menuMode)
 					HookOnMenuModeChange(previousMenuMode);
 
-
 				lastUpdateUIGameTime = gameTime;
 
 				if (MenuInterface?.CurrentState != null)
@@ -85,7 +84,7 @@ namespace AssortedModdingTools.Systems.Menu
 					//bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
 					//Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
 					MenuInterface.SetState(LanguageSettings);
-					Main.menuMode = 888;
+					Main.menuMode = (int)MenuModes.LanguageSettings;
 				}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 
 				MenuHelper.AddButton("Modding Tools", MenuModes.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools

@@ -23,7 +23,7 @@ namespace AssortedModdingTools.UI.Elements
 			this.text = text;
 			this.textBorderColor = textBorderColor ?? TextBorderColors.WhiteBlack;
 			Vector2 size = Main.fontDeathText.MeasureString(text);
-			this.origin = origin ?? new Vector2(size.X / 2f, 0);
+			this.origin = origin ?? new Vector2(size.X / 2f, size.Y / 2f);
 			this.scale = scale;
 			Width.Set(size.X, 0f);
 			Height.Set(size.Y, 0f);
