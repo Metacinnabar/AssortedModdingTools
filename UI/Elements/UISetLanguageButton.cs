@@ -11,7 +11,7 @@ namespace AssortedModdingTools.UI.Elements
 	{
 		public readonly GameCulture NewCulture;
 
-		public UISetLanguageButton(string text, GameCulture newCulture, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float scale = 1f) : base(text, textBorderHoverColors, origin, scale)
+		public UISetLanguageButton(string text, GameCulture newCulture, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float maxscale = 1f) : base(text, textBorderHoverColors, origin, maxscale)
 		{
 			NewCulture = newCulture;
 		}

@@ -10,8 +10,13 @@ namespace AssortedModdingTools.UI.Elements
 	//todo hovering lol
 	public class UIHoverBigTextWithBorder : UIBigTextWithBorder
 	{
-		public UIHoverBigTextWithBorder(string text, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float scale = 1f)
-			: base(text, textBorderHoverColors.Value.TextBorderColors, origin, scale) { }
+		public float minScale, maxScale;
+		public UIHoverBigTextWithBorder(string text, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float maxscale = 1f)
+			: base(text, textBorderHoverColors.Value.TextBorderColors, origin, maxscale)
+		{
+			minScale = maxscale - 0.2f;
+			maxScale = maxscale;
+		}
 
 		//disregard the other draw and replace
 		protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -35,13 +40,13 @@ namespace AssortedModdingTools.UI.Elements
 
 			if (IsMouseHovering)
 			{
-				if (scale < 1)
-					scale += 0.2f;
+				if (scale < maxScale)
+					scale += 0.02f;
 
-				if (scale > 1)
-					scale = 1;
+				if (scale > maxScale)
+					scale = maxScale;
 			}
-			else if (scale > 0.8f)
+			else if (scale > minScale)
 				scale -= 0.02f;
 		}
 	}
