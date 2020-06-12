@@ -14,12 +14,11 @@ namespace AssortedModdingTools.UI.Elements
 		public UISetLanguageButton(string text, GameCulture newCulture, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float scale = 1f) : base(text, textBorderHoverColors, origin, scale)
 		{
 			NewCulture = newCulture;
+			OnClick += UISetLanguageButton_OnClick;
 		}
 
-		public override void Click(UIMouseEvent evt)
+		private void UISetLanguageButton_OnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			base.Click(evt);
-
 			Main.chTitle = true;
 			LanguageManager.Instance.SetLanguage(NewCulture);
 			Main.PlaySound(SoundID.MenuTick);

@@ -7,7 +7,6 @@ using Terraria.UI;
 
 namespace AssortedModdingTools.UI.Elements
 {
-	//todo hovering lol
 	public class UIHoverBigTextWithBorder : UIBigTextWithBorder
 	{
 		public UIHoverBigTextWithBorder(string text, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float scale = 1f)
@@ -23,17 +22,30 @@ namespace AssortedModdingTools.UI.Elements
 
 			color = new Color((color.R + 35) / 2, (color.G + 35) / 2, (color.B + 35) / 2);
 
+			float hoverScale = 1;
+
 			if (IsMouseHovering)
 				color = Color.Gold;
 
-			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, color, textBorderColor.borderColor, origin, scale);
+			/*if (IsMouseHovering)
+			{
+				if (hoverScale < scale)
+					hoverScale += 0.01f;
+
+				if (hoverScale > scale)
+					hoverScale = scale;
+			}
+			else if (hoverScale < scale - 0.1f)
+				hoverScale -= 0.01f;*/
+
+			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, color, textBorderColor.borderColor, origin, scale - 0.2f);
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
 
-			if (IsMouseHovering)
+			/*if (IsMouseHovering)
 			{
 				if (scale < 1)
 					scale += 0.2f;
@@ -42,7 +54,7 @@ namespace AssortedModdingTools.UI.Elements
 					scale = 1;
 			}
 			else if (scale > 0.8f)
-				scale -= 0.02f;
+				scale -= 0.02f;*/
 		}
 	}
 }

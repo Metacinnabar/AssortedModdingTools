@@ -18,12 +18,12 @@ namespace AssortedModdingTools.UI.Elements
 
 		public float scale = 1f;
 
-		public UIBigTextWithBorder(string text, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 1f)
+		public UIBigTextWithBorder(string text, TextBorderColors? textBorderColor = null, Vector2? origin = null, float scale = 0.8f)
 		{
 			this.text = text;
 			this.textBorderColor = textBorderColor ?? TextBorderColors.WhiteBlack;
 			Vector2 size = Main.fontDeathText.MeasureString(text);
-			this.origin = origin ?? size / 2f;
+			this.origin = origin ?? new Vector2(size.X / 2f, 0);
 			this.scale = scale;
 			Width.Set(size.X, 0f);
 			Height.Set(size.Y, 0f);
@@ -38,7 +38,7 @@ namespace AssortedModdingTools.UI.Elements
 
 			color = new Color((color.R + Color.White.R) / 2, (color.G + Color.White.G) / 2, (color.B + Color.White.B) / 2);
 
-			Main.spriteBatch.DrawString(Main.fontDeathText, text, new Vector2(pos.X, pos.Y), color, 0f, origin, scale, SpriteEffects.None, default);
+			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontDeathText, text, pos.X, pos.Y, color, Color.Black, origin, scale - 0.2f);
 		}
 	}
 }
