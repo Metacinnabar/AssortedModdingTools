@@ -1,15 +1,15 @@
 ﻿using AssortedModdingTools.DataStructures;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
-using Terraria.ID;
 
 namespace AssortedModdingTools.UI.Elements
 {
 	public class UISetLanguageButton : UIHoverBigTextWithBorder
 	{
-		public readonly GameCulture NewCulture;
+		public GameCulture NewCulture { get; private set; }
 
 		public UISetLanguageButton(string text, GameCulture newCulture, TextBorderHoverColors? textBorderHoverColors = null, Vector2? origin = null, float maxscale = 1f) : base(text, textBorderHoverColors, origin, maxscale)
 		{
@@ -20,7 +20,7 @@ namespace AssortedModdingTools.UI.Elements
 		private void UISetLanguageButton_OnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.chTitle = true;
-			LanguageManager.Instance.SetLanguage(NewCulture);
+			LanguageManager.Instance.SetLanguage(NewCulture); //set the new language
 			Main.PlaySound(SoundID.MenuTick);
 			Main.SaveSettings();
 		}

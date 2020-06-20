@@ -6,6 +6,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 
@@ -17,7 +18,7 @@ namespace AssortedModdingTools.Systems.Menu
 		public static MenuModes MenuState => (MenuModes)Main.menuMode;
 
 		private static int previousMenuMode;
-
+		
 		private static GameTime lastUpdateUIGameTime;
 
 		public override void Load()
