@@ -80,7 +80,7 @@ namespace AssortedModdingTools.Systems.Menu
 
 			if (ModCompileHelper.DeveloperMode)
 			{
-				MenuHelper.AddButton("haha test menu use for tests hahaha", delegate //Language.GetTextValue("tModLoader.MenuModSources")
+				MenuHelper.AddButton("haha test menu used for tests hahaha", delegate //Language.GetTextValue("tModLoader.MenuModSources")
 				{
 					//bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
 					//Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
