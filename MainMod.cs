@@ -28,7 +28,7 @@ namespace AssortedModdingTools
 			FPSCounter.Load();
 
 			//Events
-			On.Terraria.Main.Update += Main_Update; ;
+			On.Terraria.Main.Update += Main_Update;
 		}
 
 		private void Main_Update(On.Terraria.Main.orig_Update orig, Main self, Microsoft.Xna.Framework.GameTime gameTime)
