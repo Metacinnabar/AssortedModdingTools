@@ -88,7 +88,9 @@ namespace AssortedModdingTools.Systems.Menu
 					Main.menuMode = (int)MenuModes.LanguageSettings;
 				}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 
-				MenuHelper.AddButton("Modding Tools", MenuModes.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools
+				MenuHelper.AddButton("Modding Tools", MenuModes.ModdingTools, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Modding Tools (note: very cringe because there isn't a back button)
+
+				MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModSources"), MenuModes.ModSources, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Sources
 			}
 
 			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuModBrowser"), MenuModes.ModBrowser, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mod Browser
