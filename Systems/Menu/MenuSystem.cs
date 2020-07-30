@@ -12,7 +12,6 @@ using Terraria.UI;
 
 namespace AssortedModdingTools.Systems.Menu
 {
-	//TODO display somewhere amount of mods loaded
 	public partial class MenuSystem : SystemBase
 	{
 		public static MenuModes MenuState => (MenuModes)Main.menuMode;

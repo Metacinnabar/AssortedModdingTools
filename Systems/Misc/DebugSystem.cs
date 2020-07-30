@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ModLoader;
 
 namespace AssortedModdingTools.Systems.Misc
 {
@@ -9,5 +10,11 @@ namespace AssortedModdingTools.Systems.Misc
 			if (Main.gameMenu)
 				FPSCounterSystem.debugTexts["MenuState"] = "Main Menu State: " + Main.menuMode + ". Previous Main Menu State: " + previousMenuMode;
 		}
-	}
+
+        public override void PostDrawMenu()
+		{
+			if (Main.gameMenu)
+				FPSCounterSystem.debugTexts["EnabledMods"] = $"Enabled Mod Count: {ModLoader.Mods.Length - 1}";
+		}
+    }
 }
