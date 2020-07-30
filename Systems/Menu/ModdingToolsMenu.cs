@@ -16,13 +16,13 @@ namespace AssortedModdingTools.Systems.Menu
 		private void DrawModdingToolsMenu()
 		{
 			//MenuSystem.MenuInterface.SetState(createMod);
-			//Main.menuMode = 888;
+			//Main.menuMode = (int)MenuModes.FancyUI;
 		}
 
 		public static void OnModdingToolsButtonClick()
 		{
 			Main.MenuUI.SetState(createMod);
-			Main.menuMode = 888;
+			Main.menuMode = (int)MenuModes.FancyUI;
 		}
 	}
 }

@@ -36,6 +36,7 @@
 		//113-251
 		CursorBorderColorSettings = 252,
 		//253-1110
+		FancyUI = 888,
 		MultiplayerHostAndPlaySettings = 889,
 		VideoSettings = 1111,
 		InterfaceSettings = 1112,

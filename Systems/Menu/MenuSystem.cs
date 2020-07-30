@@ -76,6 +76,14 @@ namespace AssortedModdingTools.Systems.Menu
 		//Remove when rewritting menu
 		private static void Interface_AddMenuButtons(Orig_AddMenuButtons orig, Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
+			MenuHelper.AddButton(Language.GetTextValue("UI.Achievements"), delegate
+			{
+				//bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
+				//Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
+				MenuInterface.SetState(Main.AchievementsMenu);
+				Main.menuMode = (int)MenuModes.FancyUI;
+			}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Achievements
+
 			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuModes.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods
 
 			if (ModCompileHelper.DeveloperMode)
