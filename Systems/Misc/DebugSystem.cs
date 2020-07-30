@@ -14,7 +14,7 @@ namespace AssortedModdingTools.Systems.Misc
         public override void PostDrawMenu()
 		{
 			if (Main.gameMenu)
-				FPSCounterSystem.debugTexts["EnabledMods"] = $"Enabled Mod Count: {ModLoader.Mods.Length - 1}";
+				FPSCounterSystem.debugTexts["EnabledMods"] = $"Enabled Mods Count: {ModLoader.Mods.Length - 1}";
 		}
     }
 }
