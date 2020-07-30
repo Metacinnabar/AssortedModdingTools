@@ -25,6 +25,7 @@ namespace AssortedModdingTools.Systems.Menu
 		{
 			if (!Main.dedServ) //idk?
 			{
+				AchievementsMenu = new UIAchievementsMenu();
 				MenuInterface = new UserInterface();
 				LanguageSettings = new UILanguageSettings();
 
@@ -78,10 +79,8 @@ namespace AssortedModdingTools.Systems.Menu
 		{
 			MenuHelper.AddButton(Language.GetTextValue("UI.Achievements"), delegate
 			{
-				//bool ret = (bool)ReflectionSystem.DeveloperModeReady.Invoke(null, new object[1]);
-				//Main.menuMode = ret ? (int)MenuModes.ModSources : (int)MenuModes.DeveloperModeHelp;
-				MenuInterface.SetState(Main.AchievementsMenu);
-				Main.menuMode = (int)MenuModes.FancyUI;
+				Main.MenuUI.SetState(AchievementsMenu);
+				Main.menuMode = 888;
 			}, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Achievements
 
 			MenuHelper.AddButton(Language.GetTextValue("tModLoader.MenuMods"), MenuModes.Mods, selectedMenu, buttonNames, ref buttonIndex, ref numButtons); //Mods

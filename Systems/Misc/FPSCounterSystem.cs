@@ -25,7 +25,7 @@ namespace AssortedModdingTools.Systems.Misc
 			frameCounter = null;
 		}
 
-		private static void Main_OnPostDraw(GameTime gameTime) => frameCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+		private static void Main_OnPostDraw(GameTime gameTime) => frameCounter?.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
 		private static void Main_DrawFPS(On.Terraria.Main.orig_DrawFPS orig, Main self) => DrawFPS();
 

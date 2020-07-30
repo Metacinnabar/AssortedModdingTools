@@ -14,6 +14,7 @@ namespace AssortedModdingTools.Systems.Menu
 	{
 		public static UserInterface MenuInterface { get; protected set; }
 
+		public static UIAchievementsMenu AchievementsMenu;
 		public static UILanguageSettings LanguageSettings;
 		public static UISettings Settings;
 
