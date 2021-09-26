@@ -1,4 +1,4 @@
-displayName = GoodPro712's Modding Tools
-author = GoodPro712
+displayName = Metacinnabar's Modding Tools
+author = Metacinnabar
 version = 1.0
 buildIgnore = ItemTemplates/, build.txt, .gitattributes, .gitignore, .git/, .vs/, .idea/, bin/, obj/, Thumbs.db
